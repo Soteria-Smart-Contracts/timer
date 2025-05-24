@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Tracker</title>
+    <style>
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        #sessionTimeDisplay {
+            font-size: 1.8rem;
+            color: #555555;
+            margin-bottom: 10px;
+        }
+
+        #totalTimeDisplay {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #startStopButton {
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            background-color: #cccccc;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #startStopButton svg.power-icon .power-icon-circle {
+            stroke: #888888;
+            fill: none;
+            stroke-linecap: round;
+            transition: stroke 0.3s ease;
+        }
+
+        #startStopButton:hover {
+            background-color: #bbbbbb;
+        }
+
+        #startStopButton.active-state {
+            background-color: #28a745;
+        }
+        
+        #startStopButton.active-state svg.power-icon .power-icon-circle {
+            stroke: #ffffff;
+        }
+
+        #startStopButton.active-state:hover {
+            background-color: #1e7e34;
+        }
+    </style>
+</head>
+<body onbeforeunload="handlePageClose()">
+    <div id="sessionTimeDisplay">00:00:00</div>
+    <div id="totalTimeDisplay">00:00:00</div>
+    <button id="startStopButton" onclick="handleStartStopClick()">
+        <svg class="power-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="40" height="40">
+            <path class="power-icon-circle" d="M50,15 C25.16,15 15,25.16 15,50 C15,74.84 25.16,85 50,85 C74.84,85 85,74.84 85,50 C85,37.32 85,28 M50,10 V40" fill="none" stroke-width="10"/>
+        </svg>
+    </button>
+
+    <script>
+        const totalTimeDisplayEl = document.getElementById('totalTimeDisplay'); // Renamed
+        const sessionTimeDisplayEl = document.getElementById('sessionTimeDisplay'); // New
+        const startStopButton = document.getElementById('startStopButton');
+        // The path class is "power-icon-circle" - HTML comment moved to JS for reference if needed
+
+        let totalTimeToday = +localStorage.getItem('totalTimeToday') || 0;
+        let lastActiveDate = localStorage.getItem('lastActiveDate') || getCurrentDateString();
+        let isTimerRunning = localStorage.getItem('isTimerRunning') === 'true';
+        let timerStartTime = +localStorage.getItem('timerStartTime') || null;
+        let timerInterval;
+
+        function getCurrentDateString() { return new Date().toISOString().slice(0, 10); }
+        function formatTime(s) { let h=Math.floor(s/3600), m=Math.floor((s%3600)/60); s%=60; return (h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s; }
+        
+        function updateDisplays() { // Renamed and logic updated
+            let currentSessionSeconds = 0;
+            if (isTimerRunning && timerStartTime) {
+                currentSessionSeconds = Math.floor((Date.now() - timerStartTime) / 1000);
+                sessionTimeDisplayEl.textContent = formatTime(currentSessionSeconds);
+                totalTimeDisplayEl.textContent = formatTime(totalTimeToday + currentSessionSeconds);
+            } else {
+                sessionTimeDisplayEl.textContent = formatTime(0);
+                totalTimeDisplayEl.textContent = formatTime(totalTimeToday);
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem('totalTimeToday', totalTimeToday);
+            localStorage.setItem('lastActiveDate', lastActiveDate);
+            localStorage.setItem('isTimerRunning', isTimerRunning);
+            localStorage.setItem('timerStartTime', timerStartTime);
+        }
+
+        function startTimer() {
+            isTimerRunning = true; timerStartTime = Date.now();
+            startStopButton.classList.add('active-state');
+            if(timerInterval) clearInterval(timerInterval); timerInterval = setInterval(updateDisplays, 1000); // Call updateDisplays
+            saveState();
+        }
+
+        function stopTimer() {
+            if (!isTimerRunning) return;
+            totalTimeToday += Math.floor((Date.now() - timerStartTime) / 1000);
+            isTimerRunning = false; timerStartTime = null; // timerStartTime reset before updateDisplays
+            startStopButton.classList.remove('active-state');
+            if(timerInterval) clearInterval(timerInterval); timerInterval = null;
+            updateDisplays(); saveState(); // Call updateDisplays
+        }
+
+        function handleStartStopClick() { if (isTimerRunning) stopTimer(); else startTimer(); }
+        function handlePageClose() { if (isTimerRunning) stopTimer(); }
+
+        // Initialization
+        if (getCurrentDateString() !== lastActiveDate) {
+            totalTimeToday = 0; lastActiveDate = getCurrentDateString();
+            if(isTimerRunning){ 
+                isTimerRunning=false; timerStartTime=null; 
+                startStopButton.classList.remove('active-state'); 
+                if(timerInterval) clearInterval(timerInterval); timerInterval = null; 
+            }
+            // updateDisplays(); // Call after reset, handled by final updateDisplays
+        }
+
+        if (isTimerRunning) { 
+            timerStartTime = Date.now(); 
+            startStopButton.classList.add('active-state');
+            if(timerInterval) clearInterval(timerInterval); 
+            timerInterval = setInterval(updateDisplays, 1000); // Call updateDisplays
+        } else {
+            startStopButton.classList.remove('active-state');
+            // sessionTimeDisplayEl.textContent = formatTime(0); // Ensure session is 0 if not running, handled by final updateDisplays
+        }
+
+        updateDisplays(); // Final call to set initial state for both displays
+        saveState();
+    </script>
+</body>
+</html>
