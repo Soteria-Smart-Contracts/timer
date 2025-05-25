@@ -20,6 +20,7 @@
             font-size: 1.8rem;
             color: #555555;
             margin-bottom: 10px;
+            margin-top: 20px; /* Added margin-top */
         }
 
         #totalTimeDisplay {
@@ -29,53 +30,52 @@
         }
 
         #startStopButton {
-            padding: 10px;
+            width: 150px;
+            height: 150px;
             cursor: pointer;
             border: none;
-            border-radius: 8px;
-            background-color: #cccccc;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            border-radius: 50%; /* Circular */
+            background-color: #e0e0e0; /* Default OFF background */
+            background-image: linear-gradient(to bottom, #f5f5f5, #e0e0e0); /* Subtle gradient for OFF */
+            box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease, color 0.3s ease, text-shadow 0.3s ease, background-image 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        #startStopButton svg.power-icon .power-icon-circle {
-            stroke: #888888;
-            fill: none;
-            stroke-linecap: round;
-            transition: stroke 0.3s ease;
+            font-size: 2.5rem; /* Text styling for ON/OFF */
+            color: #555555; /* Dark grey text for OFF state */
+            font-weight: bold;
+            text-shadow: 1px 1px 1px rgba(255,255,255,0.7); /* Subtle light shadow for OFF text */
         }
 
         #startStopButton:hover {
-            background-color: #bbbbbb;
+            /* Optional: slightly darker hover for OFF state if desired, or keep as is */
+            /* background-color: #d5d5d5; */
+            /* background-image: linear-gradient(to bottom, #efefef, #d5d5d5); */
         }
 
         #startStopButton.active-state {
-            background-color: #28a745;
-        }
-        
-        #startStopButton.active-state svg.power-icon .power-icon-circle {
-            stroke: #ffffff;
+            background-color: #4CAF50; /* Active ON background */
+            background-image: linear-gradient(to bottom, #66bb6a, #4CAF50); /* Gradient for ON */
+            color: white; /* White text for ON state */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.4); /* Darker shadow for ON text */
         }
 
         #startStopButton.active-state:hover {
-            background-color: #1e7e34;
+            /* Optional: slightly darker hover for ON state if desired */
+            /* background-color: #45a049; */
+            /* background-image: linear-gradient(to bottom, #5cb85c, #45a049); */
         }
     </style>
 </head>
 <body onbeforeunload="handlePageClose()">
+    <button id="startStopButton" onclick="handleStartStopClick()"></button> 
     <div id="sessionTimeDisplay">00:00:00</div>
     <div id="totalTimeDisplay">00:00:00</div>
-    <button id="startStopButton" onclick="handleStartStopClick()">
-        <svg class="power-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="40" height="40">
-            <path class="power-icon-circle" d="M50,15 C25.16,15 15,25.16 15,50 C15,74.84 25.16,85 50,85 C74.84,85 85,74.84 85,50 C85,37.32 85,28 M50,10 V40" fill="none" stroke-width="10"/>
-        </svg>
-    </button>
 
     <script>
-        const totalTimeDisplayEl = document.getElementById('totalTimeDisplay'); // Renamed
-        const sessionTimeDisplayEl = document.getElementById('sessionTimeDisplay'); // New
+        const totalTimeDisplayEl = document.getElementById('totalTimeDisplay'); 
+        const sessionTimeDisplayEl = document.getElementById('sessionTimeDisplay'); 
         const startStopButton = document.getElementById('startStopButton');
         // The path class is "power-icon-circle" - HTML comment moved to JS for reference if needed
 
@@ -88,7 +88,7 @@
         function getCurrentDateString() { return new Date().toISOString().slice(0, 10); }
         function formatTime(s) { let h=Math.floor(s/3600), m=Math.floor((s%3600)/60); s%=60; return (h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s; }
         
-        function updateDisplays() { // Renamed and logic updated
+        function updateDisplays() { 
             let currentSessionSeconds = 0;
             if (isTimerRunning && timerStartTime) {
                 currentSessionSeconds = Math.floor((Date.now() - timerStartTime) / 1000);
@@ -98,6 +98,8 @@
                 sessionTimeDisplayEl.textContent = formatTime(0);
                 totalTimeDisplayEl.textContent = formatTime(totalTimeToday);
             }
+            // Update button text based on timer state
+            startStopButton.textContent = isTimerRunning ? 'ON' : 'OFF';
         }
 
         function saveState() {
@@ -110,17 +112,19 @@
         function startTimer() {
             isTimerRunning = true; timerStartTime = Date.now();
             startStopButton.classList.add('active-state');
-            if(timerInterval) clearInterval(timerInterval); timerInterval = setInterval(updateDisplays, 1000); // Call updateDisplays
+            if(timerInterval) clearInterval(timerInterval); timerInterval = setInterval(updateDisplays, 1000); 
+            updateDisplays(); // Update text immediately
             saveState();
         }
 
         function stopTimer() {
             if (!isTimerRunning) return;
             totalTimeToday += Math.floor((Date.now() - timerStartTime) / 1000);
-            isTimerRunning = false; timerStartTime = null; // timerStartTime reset before updateDisplays
+            isTimerRunning = false; timerStartTime = null; 
             startStopButton.classList.remove('active-state');
             if(timerInterval) clearInterval(timerInterval); timerInterval = null;
-            updateDisplays(); saveState(); // Call updateDisplays
+            updateDisplays(); // Update text immediately
+            saveState(); 
         }
 
         function handleStartStopClick() { if (isTimerRunning) stopTimer(); else startTimer(); }
@@ -134,20 +138,18 @@
                 startStopButton.classList.remove('active-state'); 
                 if(timerInterval) clearInterval(timerInterval); timerInterval = null; 
             }
-            // updateDisplays(); // Call after reset, handled by final updateDisplays
         }
 
         if (isTimerRunning) { 
             timerStartTime = Date.now(); 
             startStopButton.classList.add('active-state');
             if(timerInterval) clearInterval(timerInterval); 
-            timerInterval = setInterval(updateDisplays, 1000); // Call updateDisplays
+            timerInterval = setInterval(updateDisplays, 1000); 
         } else {
             startStopButton.classList.remove('active-state');
-            // sessionTimeDisplayEl.textContent = formatTime(0); // Ensure session is 0 if not running, handled by final updateDisplays
         }
 
-        updateDisplays(); // Final call to set initial state for both displays
+        updateDisplays(); 
         saveState();
     </script>
 </body>
