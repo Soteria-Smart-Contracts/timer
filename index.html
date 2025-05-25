@@ -14,9 +14,9 @@
             min-height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
-            transition: background-color 0.5s ease; /* Phase 5 */
+            transition: background-color 0.5s ease; 
         }
-        body.timer-active { /* Phase 5 */
+        body.timer-active { 
             background-color: #f0f8f0; 
         }
 
@@ -34,8 +34,8 @@
         }
 
         #startStopButton {
-            width: 200px; /* Phase 5 */
-            height: 200px; /* Phase 5 */
+            width: 200px; 
+            height: 200px; 
             cursor: pointer;
             border: none;
             border-radius: 50%; 
@@ -64,84 +64,36 @@
             color: #757575; 
             font-style: italic;
             padding: 5px 0;
-            cursor: pointer; 
-            transition: color 0.3s ease;
-            text-align: center; /* Ensure it's centered */
+            cursor: text; /* Updated cursor for direct editing */
+            transition: color 0.3s ease, font-style 0.3s ease; /* Added font-style to transition */
+            text-align: center; 
+            min-width: 150px; /* Give it a minimum width so it's clickable even if empty */
+            border: 1px dashed transparent; /* Placeholder for focus style */
         }
 
-        #taskDisplay:hover {
+        #taskDisplay:hover { /* Hover remains useful for visual feedback */
             color: #333; 
         }
-
-        #taskSelectionPanel {
-            background-color: #f9f9f9;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
-            padding: 15px;
-            margin-top: 5px; 
-            opacity: 0; 
-            max-height: 0; 
-            overflow: hidden; 
-            transition: opacity 0.3s ease, max-height 0.3s ease, visibility 0.3s ease; 
-            width: 250px; /* Give panel a defined width */
-            box-sizing: border-box;
-        }
-
-        .presetTaskItem {
-            padding: 8px 5px; 
-            cursor: pointer; 
-            border-bottom: 1px solid #eee; 
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background-color 0.2s ease;
-        }
-
-        .presetTaskItem:last-child { 
-            border-bottom: none;
-        }
-
-        .presetTaskItem:hover {
-            background-color: #f0f0f0;
-        }
-
-        .presetTaskItem .presetTaskName {
-            flex-grow: 1;
-        }
-        .presetTaskItem .editPresetInput { /* Phase 2 */
-            flex-grow: 1;
-            padding: 4px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-        }
-
-
-        .edit-icon {
-            margin-left: 10px; 
-            cursor: pointer; 
-            font-size: 0.9em;
-        }
-
-        #customTaskInput {
-            width: 100%; /* Let padding be handled by box-sizing */
-            padding: 8px 5px; 
-            margin-top: 10px; 
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            box-sizing: border-box; 
-        }
         
-        #customTaskInput::placeholder {
-            font-style: italic;
-            color: #999;
+        /* Styles for when taskDisplay is being edited (JS will add this class) */
+        #taskDisplay.editing {
+            font-style: normal;
+            color: #333;
+            cursor: text;
+            border: 1px dashed #ccc;
+            outline: none; /* Remove default focus outline if input is contenteditable */
         }
 
-        #presetTaskTimeDisplay {
-            font-size: 1.5rem;
-            color: #4CAF50; 
-            margin-top: 5px; 
-            text-align: center;
-        }
+        /* Removed CSS rules for:
+           #taskSelectionPanel, 
+           .presetTaskItem, 
+           .presetTaskItem .presetTaskName, (was part of .presetTaskItem flex)
+           .presetTaskItem .editPresetInput,
+           .edit-icon, 
+           #customTaskInput, 
+           #customTaskInput::placeholder, 
+           #presetTaskTimeDisplay 
+        */
     </style>
 </head>
 <body onbeforeunload="handlePageClose()">
@@ -150,12 +102,7 @@
     <div id="totalTimeDisplay">00:00:00</div>
     <div id="taskContainer">
         <div id="taskDisplay">I'm working on...</div>
-        <div id="taskSelectionPanel"> 
-            {/* Preset tasks will be rendered here by JS */}
-            <input type="text" id="customTaskInput" placeholder="Or enter custom task (max 30 chars)" maxlength="30"> 
-        </div>
     </div>
-    <div id="presetTaskTimeDisplay">00:00:00</div>
 
     <script>
         // Main Timer DOM Elements
@@ -165,9 +112,6 @@
 
         // Task UI DOM Elements
         const taskDisplayEl = document.getElementById('taskDisplay');
-        const taskSelectionPanelEl = document.getElementById('taskSelectionPanel');
-        const customTaskInputEl = document.getElementById('customTaskInput');
-        const presetTaskTimeDisplayEl = document.getElementById('presetTaskTimeDisplay');
 
         // Main Timer State Variables
         let totalTimeToday = +localStorage.getItem('totalTimeToday') || 0;
@@ -178,13 +122,6 @@
         
         // Task State Variables
         let currentTaskName = localStorage.getItem('currentTaskName') || "I'm working on...";
-        let currentSelectedTaskId = localStorage.getItem('currentSelectedTaskId') || null;
-        let presetTasks = JSON.parse(localStorage.getItem('presetTasks')) || [
-            {id: 'p1', name: 'Work'}, {id: 'p2', name: 'Study'}, {id: 'p3', name: 'Exercise'}
-        ];
-        // Phase 3 State
-        let dailyPresetTaskTotals = JSON.parse(localStorage.getItem('dailyPresetTaskTotals')) || {};
-        let activeTaskStartTime = localStorage.getItem('activeTaskStartTime') ? parseInt(localStorage.getItem('activeTaskStartTime')) : null;
         
         // Phase 4 State
         let sessionLogs = JSON.parse(localStorage.getItem('sessionLogs')) || [];
@@ -202,18 +139,6 @@
             totalTimeDisplayEl.textContent = formatTime(totalTimeToday + currentMainSessionSeconds);
             
             startStopButton.textContent = isTimerRunning ? 'ON' : 'OFF';
-            
-            // Phase 3: Update presetTaskTimeDisplayEl
-            if (currentSelectedTaskId && currentSelectedTaskId.startsWith('p')) {
-                let currentPresetTotal = dailyPresetTaskTotals[currentSelectedTaskId] || 0;
-                if (isTimerRunning && activeTaskStartTime && currentSelectedTaskId === currentSelectedTaskId) { // ensure this task is the one running
-                    currentPresetTotal += Math.floor((Date.now() - activeTaskStartTime) / 1000);
-                }
-                presetTaskTimeDisplayEl.textContent = formatTime(currentPresetTotal);
-                presetTaskTimeDisplayEl.style.display = 'block';
-            } else {
-                presetTaskTimeDisplayEl.style.display = 'none';
-            }
         }
 
         function saveState() {
@@ -221,27 +146,16 @@
             localStorage.setItem('lastActiveDate', lastActiveDate);
             localStorage.setItem('isTimerRunning', isTimerRunning);
             localStorage.setItem('timerStartTime', timerStartTime);
-            
             localStorage.setItem('currentTaskName', currentTaskName);
-            localStorage.setItem('currentSelectedTaskId', currentSelectedTaskId);
-            localStorage.setItem('presetTasks', JSON.stringify(presetTasks));
-            
-            localStorage.setItem('dailyPresetTaskTotals', JSON.stringify(dailyPresetTaskTotals)); // Phase 3
-            localStorage.setItem('activeTaskStartTime', activeTaskStartTime); // Phase 3
-
-            localStorage.setItem('sessionLogs', JSON.stringify(sessionLogs)); // Phase 4
+            localStorage.setItem('sessionLogs', JSON.stringify(sessionLogs)); 
         }
 
         function startTimer() {
             isTimerRunning = true; 
             if (!timerStartTime) timerStartTime = Date.now(); 
             
-            if (currentSelectedTaskId && !activeTaskStartTime) { // Phase 3: If a task is selected, ensure activeTaskStartTime is set
-                activeTaskStartTime = Date.now(); 
-            }
-
             startStopButton.classList.add('active-state');
-            document.body.classList.add('timer-active'); // Phase 5
+            document.body.classList.add('timer-active'); 
             if(timerInterval) clearInterval(timerInterval); 
             timerInterval = setInterval(updateDisplays, 1000); 
             updateDisplays(); 
@@ -255,14 +169,6 @@
             const mainSessionDuration = timerStartTime ? Math.floor((mainSessionEndTime - timerStartTime) / 1000) : 0;
             totalTimeToday += mainSessionDuration;
 
-            // Phase 3: Log time for active preset task
-            if (currentSelectedTaskId && currentSelectedTaskId.startsWith('p') && activeTaskStartTime) {
-                let taskSegmentDuration = Math.floor((mainSessionEndTime - activeTaskStartTime) / 1000);
-                dailyPresetTaskTotals[currentSelectedTaskId] = (dailyPresetTaskTotals[currentSelectedTaskId] || 0) + taskSegmentDuration;
-            }
-            activeTaskStartTime = null; // Phase 3: Reset active task start time
-
-            // Phase 4: Session Logging
             if (currentTaskName !== "I'm working on..." && mainSessionDuration > 0) {
                 const logEntry = { 
                     startTime: timerStartTime, 
@@ -275,14 +181,12 @@
             }
             
             isTimerRunning = false; 
-            // timerStartTime = null; // Important: Keep timerStartTime to correctly reflect the segment just logged.
-                                    // It will be reset by handleStartStopClick if a new segment starts.
-
+            
             startStopButton.classList.remove('active-state');
-            document.body.classList.remove('timer-active'); // Phase 5
+            document.body.classList.remove('timer-active'); 
             if(timerInterval) clearInterval(timerInterval); 
             timerInterval = null;
-            updateDisplays(); // Update displays after all calculations
+            updateDisplays(); 
             saveState(); 
         }
 
@@ -290,169 +194,44 @@
             if (isTimerRunning) {
                 stopTimer();
             } else {
-                // Starting a new session segment
                 timerStartTime = Date.now(); 
-                if (currentSelectedTaskId) { // If a task is selected, its active time starts now
-                    activeTaskStartTime = Date.now();
-                }
                 startTimer();
             }
         }
         function handlePageClose() { if (isTimerRunning) stopTimer(); }
-
-        // --- Task Specific Functions ---
-        function toggleTaskPanel(show) {
-            if (show) {
-                taskSelectionPanelEl.style.display = 'block';
-                setTimeout(() => { 
-                    taskSelectionPanelEl.style.opacity = '1';
-                    taskSelectionPanelEl.style.maxHeight = '300px'; 
-                }, 10); 
-            } else {
-                taskSelectionPanelEl.style.opacity = '0';
-                taskSelectionPanelEl.style.maxHeight = '0';
-                setTimeout(() => { 
-                    if (taskSelectionPanelEl.style.opacity === '0') { 
-                        taskSelectionPanelEl.style.display = 'none';
-                    }
-                }, 300); 
-            }
-        }
-
-        function renderPresetTasks() { // Phase 2: Modified for editing
-            const panel = taskSelectionPanelEl;
-            panel.querySelectorAll('.presetTaskItem').forEach(item => item.remove());
-
-            presetTasks.forEach(task => {
-                const item = document.createElement('div');
-                item.className = 'presetTaskItem';
-                item.dataset.taskId = task.id;
-
-                const nameSpan = document.createElement('span');
-                nameSpan.className = 'presetTaskName';
-                nameSpan.textContent = task.name;
-                item.appendChild(nameSpan);
-
-                const editSpan = document.createElement('span');
-                editSpan.className = 'edit-icon';
-                editSpan.innerHTML = '✏️'; 
-                item.appendChild(editSpan);
-                
-                panel.insertBefore(item, customTaskInputEl); // Insert before custom input
-
-                nameSpan.addEventListener('click', () => selectTask(task.id, task.name, true)); // Click name to select
-                
-                editSpan.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Prevent selectTask from firing
-                    const currentName = nameSpan.textContent;
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.className = 'editPresetInput';
-                    input.value = currentName;
-                    
-                    item.replaceChild(input, nameSpan);
-                    input.focus();
-
-                    const saveEdit = () => {
-                        const newName = input.value.trim() || currentName; // Revert if empty
-                        const taskToUpdate = presetTasks.find(p => p.id === task.id);
-                        if (taskToUpdate) {
-                            taskToUpdate.name = newName;
-                        }
-                        saveState();
-                        renderPresetTasks(); // Re-render all to update UI (simpler)
-                        if (currentSelectedTaskId === task.id) { // Update main display if current task was edited
-                            currentTaskName = newName;
-                            taskDisplayEl.textContent = newName;
-                        }
-                    };
-                    input.addEventListener('blur', saveEdit);
-                    input.addEventListener('keypress', (ev) => { if (ev.key === 'Enter') input.blur(); });
-                });
-            });
-        }
         
-        function selectTask(id, name, isPreset) { // Phase 3: Modified
-            // Log time for the PREVIOUSLY active preset task segment before switching
-            if (currentSelectedTaskId && currentSelectedTaskId.startsWith('p') && activeTaskStartTime) {
-                let previousTaskSegmentDuration = Math.floor((Date.now() - activeTaskStartTime) / 1000);
-                dailyPresetTaskTotals[currentSelectedTaskId] = (dailyPresetTaskTotals[currentSelectedTaskId] || 0) + previousTaskSegmentDuration;
-            }
-
-            currentTaskName = name;
-            currentSelectedTaskId = id; 
-            activeTaskStartTime = Date.now(); // New task's segment starts now
-
-            taskDisplayEl.textContent = currentTaskName;
-            taskDisplayEl.style.fontStyle = 'normal'; 
-            taskDisplayEl.style.color = '#333';
-            toggleTaskPanel(false);
-            
-            // Reset main session display *if the main timer is not running*.
-            if (!isTimerRunning) {
-                sessionTimeDisplayEl.textContent = formatTime(0);
-            }
-            // If timer IS running, main session display continues. The activeTaskStartTime handles the new task's timing.
-            
-            updateDisplays(); // Update to show correct preset time (will be 0 for new live segment)
-            saveState(); 
-        }
-
-        function initTasks() {
+        function initTasks() { 
             taskDisplayEl.textContent = currentTaskName;
             if (currentTaskName !== "I'm working on...") {
                  taskDisplayEl.style.fontStyle = 'normal';
                  taskDisplayEl.style.color = '#333';
+            } else {
+                taskDisplayEl.style.fontStyle = 'italic'; 
+                taskDisplayEl.style.color = '#757575';
             }
-            renderPresetTasks(); 
-            updateDisplays(); // Ensure presetTaskTimeDisplay is updated on load
-
-            taskDisplayEl.addEventListener('click', () => {
-                const isPanelVisible = taskSelectionPanelEl.style.opacity === '1';
-                toggleTaskPanel(!isPanelVisible);
-            });
-
-            customTaskInputEl.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && customTaskInputEl.value.trim() !== '') {
-                    if (customTaskInputEl.value.trim().length > 30) {
-                        alert('Task name too long (max 30 chars).'); return;
-                    }
-                    selectTask('custom:' + Date.now(), customTaskInputEl.value.trim(), false); // Use timestamp for custom ID
-                    customTaskInputEl.value = '';
-                }
-            });
+            // Direct editing for taskDisplayEl will be added in the next subtask
         }
 
         // --- Main Initialization Sequence ---
         initTasks(); 
 
-        if (getCurrentDateString() !== lastActiveDate) { // Daily Reset
+        if (getCurrentDateString() !== lastActiveDate) { 
             totalTimeToday = 0; 
             lastActiveDate = getCurrentDateString();
-            dailyPresetTaskTotals = {}; // Phase 3
-            activeTaskStartTime = null; // Phase 3
-            // sessionLogs are kept across days. Could add date filtering later if needed.
             
             if(isTimerRunning){ 
                 isTimerRunning=false; 
-                // No need to call document.body.classList.remove('timer-active'); here, it's handled below
             }
             timerStartTime = null; 
         }
 
-        if (isTimerRunning) { // Phase 5: UI Enhancement for body class
+        if (isTimerRunning) { 
             document.body.classList.add('timer-active');
-            // timerStartTime is loaded from localStorage.
-            // If a task was active, activeTaskStartTime should also be loaded and used.
-            // Ensure activeTaskStartTime is set if timer is running and a task is selected.
-            if (currentSelectedTaskId && !activeTaskStartTime) {
-                 activeTaskStartTime = timerStartTime; // Align if it was somehow lost but task was active
-            }
             startStopButton.classList.add('active-state');
             if(timerInterval) clearInterval(timerInterval); 
             timerInterval = setInterval(updateDisplays, 1000); 
         } else {
-            document.body.classList.remove('timer-active'); // Phase 5
+            document.body.classList.remove('timer-active'); 
             startStopButton.classList.remove('active-state');
         }
 
