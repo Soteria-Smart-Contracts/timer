@@ -1,13 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Time Tracker</title><style>body{font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f0f0f0;transition:.5s}body.timer-active{background:#f0f8f0}#sessionTimeDisplay{font-size:1.8rem;color:#555;margin-bottom:10px;margin-top:20px;cursor:help}#totalTimeDisplay{font-size:3rem;margin-top:20px;color:#333;transition:.3s}#startStopButton{width:200px;height:200px;cursor:pointer;border:none;border-radius:50%;background:#e0e0e0;background-image:linear-gradient(to bottom,#f5f5f5,#e0e0e0);box-shadow:0 5px 15px rgba(0,0,0,.2);transition:.3s;display:flex;align-items:center;justify-content:center;font-size:2.5rem;color:#555;text-shadow:1px 1px 1px #fff}#startStopButton.active-state{background:#4CAF50;background-image:linear-gradient(to bottom,#66bb6a,#4caf50);color:#fff;text-shadow:1px 1px 2px #000}</style></head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Time Tracker</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #f0f0f0;
+      transition: .5s;
+    }
+    body.timer-active {
+      background: #f0f8f0;
+    }
+    #sessionTimeDisplay {
+      font-size: 1.8rem;
+      color: #555;
+      margin-bottom: 10px;
+      margin-top: 20px;
+      cursor: help;
+    }
+    #totalTimeDisplay {
+      font-size: 3rem;
+      margin-top: 20px;
+      color: #333;
+      transition: .3s;
+    }
+    #startStopButton {
+      width: 200px;
+      height: 200px;
+      cursor: pointer;
+      border: none;
+      border-radius: 50%;
+      background: #e0e0e0;
+      background-image: linear-gradient(to bottom, #f5f5f5, #e0e0e0);
+      box-shadow: 0 5px 15px rgba(0,0,0,.2);
+      transition: .3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      color: #555;
+      text-shadow: 1px 1px 1px #fff;
+    }
+    #startStopButton.active-state {
+      background: #4CAF50;
+      background-image: linear-gradient(to bottom, #66bb6a, #4caf50);
+      color: #fff;
+      text-shadow: 1px 1px 2px #000;
+    }
+  </style>
+</head>
 <body>
-<div id="sessionTimeDisplay">00:00:00</div>
-<button id="startStopButton">OFF</button>
-<div id="totalTimeDisplay">00:00:00</div>
+  <div id="sessionTimeDisplay">00:00:00</div>
+  <button id="startStopButton">OFF</button>
+  <div id="totalTimeDisplay">00:00:00</div>
 
-<script>
-const[sD,tD,b]=[...['sessionTimeDisplay','totalTimeDisplay','startStopButton'].map(id=>document.getElementById(id))];let total=+localStorage.getItem('total')||0,running=!1,startT=null,sessions=+localStorage.getItem('sessions')||0,totalSessionTime=+localStorage.getItem('totalSessionTime')||0,iV=null;function fmtSec(s){let h=Math.floor(s/3600),m=Math.floor((s%3600)/60),ss=s%60;return`${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${ss.toString().padStart(2,'0')}`}function fmtAvg(d){let m=Math.floor(d/60),s=d%60;return`${m} min${m!==1?'s':''} ${s} sec${s!==1?'s':''}`};function update(){let now=Date.now(),curr=running&&startT?Math.floor((now-startT)/1e3):0;sD.textContent=fmtSec(curr);tD.textContent=fmtSec(total+curr);b.textContent=running?'ON':'OFF';b.classList.toggle('active-state',running);document.body.classList.toggle('timer-active',running)}function save(){localStorage.setItem('total',total);localStorage.setItem('sessions',sessions);localStorage.setItem('totalSessionTime',totalSessionTime)}function start(){if(!startT)startT=Date.now();running=!0;updateFavicon(!0);iV=setInterval(update,1e3);update();save()}function stop(){if(!running)return;let d=startT?Math.floor((Date.now()-startT)/1e3):0;total+=d;sessions++;totalSessionTime+=d;running=!1;startT=null;clearInterval(iV);iV=null;update();save();updateFavicon(!1)}b.onclick=()=>running?stop():start();if(running)iV=setInterval(update,1e3);else update();tD.style.cursor='pointer';let flagTimeout=null;tD.onclick=()=>{if(tD.style.color==='red'){if(confirm('Reset all tracked time and sessions?')){total=0;sessions=0;totalSessionTime=0;running=!1;startT=null;update();save();tD.style.color=''}}else{tD.style.color='red';if(flagTimeout)clearTimeout(flagTimeout);flagTimeout=setTimeout(()=>tD.style.color='',5e3)}};(() => {const tip=document.createElement('div');tip.id='tooltip';Object.assign(tip.style,{position:'absolute',top:'0',left:'0',width:'180px',padding:'8px',background:'#fff',color:'#333',border:'1px solid #ccc',borderRadius:'4px',boxShadow:'2px 2px 8px rgba(0,0,0,0.1)',fontSize:'13px',zIndex:'999',pointerEvents:'none',opacity:'0',transition:'opacity 0.2s'});document.body.appendChild(tip);sD.addEventListener('mouseenter',e=>{if(sessions){let avg=totalSessionTime/sessions;tip.innerHTML='Sessions: '+sessions+'<br>Avg: '+fmtAvg(avg);tip.style.left=e.clientX+10+'px';tip.style.top=e.clientY-30+'px';tip.style.opacity='1'}});sD.addEventListener('mousemove',e=>{if(sessions){tip.style.left=e.clientX+10+'px';tip.style.top=e.clientY-30+'px'}});sD.addEventListener('mouseleave',()=>{tip.style.opacity='0'})})();(() => {const tip=document.createElement('div');tip.id='help-tooltip';Object.assign(tip.style,{position:'fixed',top:'30px',right:'10px',width:'180px',padding:'8px',background:'#fff',color:'#333',border:'1px solid #ccc',borderRadius:'4px',boxShadow:'2px 2px 8px rgba(0,0,0,0.1)',fontSize:'13px',zIndex:'999'});document.body.appendChild(tip);const trigger=document.createElement('span');trigger.textContent='?';Object.assign(trigger.style,{position:'fixed',top:'10px',right:'10px',fontFamily:'sans-serif',fontSize:'16px',fontWeight:'bold',color:'#333',background:'#fff',border:'1px solid #ccc',padding:'4px 8px',borderRadius:'4px',cursor:'help',zIndex:'999'});document.body.appendChild(trigger);trigger.addEventListener('mouseenter',()=>{tip.textContent='Click big button to start/stop. Click total time once to flag red, again within 5s to reset.'});trigger.addEventListener('mouseleave',()=>{tip.textContent=''})})();const favIcon=document.createElement('link');favIcon.rel='icon';document.head.appendChild(favIcon);function updateFavicon(active){const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');canvas.width=canvas.height=64;ctx.fillStyle=active?'#4CAF50':'#000';ctx.beginPath();ctx.arc(32,32,32,0,7);ctx.fill();favIcon.href=canvas.toDataURL()}
-</script>
+  <script>
+const[sD,tD,b]=[...['sessionTimeDisplay','totalTimeDisplay','startStopButton'].map(id=>document.getElementById(id))];let total=+localStorage.getItem('total')||0,running=!1,startT=null,sessions=+localStorage.getItem('sessions')||0,totalSessionTime=+localStorage.getItem('totalSessionTime')||0,iV=null;function fmtSec(s){let h=Math.floor(s/3600),m=Math.floor((s%3600)/60),ss=s%60;return`${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${ss.toString().padStart(2,'0')}`}function fmtAvg(d){let m=Math.floor(d/60),s=d%60;return`${m} min${m!==1?'s':''} ${s} sec${s!==1?'s':''}`};function update(){let now=Date.now(),curr=running&&startT?Math.floor((now-startT)/1e3):0;sD.textContent=fmtSec(curr);tD.textContent=fmtSec(total+curr);b.textContent=running?'ON':'OFF';b.classList.toggle('active-state',running);document.body.classList.toggle('timer-active',running)}function save(){localStorage.setItem('total',total);localStorage.setItem('sessions',sessions);localStorage.setItem('totalSessionTime',totalSessionTime)}function start(){if(!startT)startT=Date.now();running=!0;updateFavicon(!0);iV=setInterval(update,1e3);update();save()}function stop(){if(!running)return;let d=startT?Math.floor((Date.now()-startT)/1e3):0;total+=d;sessions++;totalSessionTime+=d;running=!1;startT=null;clearInterval(iV);iV=null;update();save();updateFavicon(!1)}b.onclick=()=>running?stop():start();if(running)iV=setInterval(update,1e3);else update();tD.style.cursor='pointer';let flagTimeout=null;tD.onclick=()=>{if(tD.style.color==='red'){if(confirm('Reset all tracked time and sessions?')){total=0;sessions=0;totalSessionTime=0;running=!1;startT=null;update();save();tD.style.color=''}}else{tD.style.color='red';if(flagTimeout)clearTimeout(flagTimeout);flagTimeout=setTimeout(()=>tD.style.color='',5e3)}};(() => {const tip=document.createElement('div');tip.id='tooltip';Object.assign(tip.style,{position:'absolute',top:'0',left:'0',width:'180px',padding:'8px',background:'#fff',color:'#333',border:'1px solid #ccc',borderRadius:'4px',boxShadow:'2px 2px 8px rgba(0,0,0,0.1)',fontSize:'13px',zIndex:'999',pointerEvents:'none',opacity:'0',transition:'opacity 0.2s'});document.body.appendChild(tip);sD.addEventListener('mouseenter',e=>{if(sessions){let avg=totalSessionTime/sessions;tip.innerHTML='Sessions: '+sessions+'<br>Avg: '+fmtAvg(avg);tip.style.left=e.clientX+10+'px';tip.style.top=e.clientY-30+'px';tip.style.opacity='1'}});sD.addEventListener('mousemove',e=>{if(sessions){tip.style.left=e.clientX+10+'px';tip.style.top=e.clientY-30+'px'}});sD.addEventListener('mouseleave',()=>{tip.style.opacity='0'})})();(() => {const tip=document.createElement('div');tip.id='help-tooltip';Object.assign(tip.style,{position:'fixed',top:'30px',right:'10px',width:'180px',padding:'8px',background:'#fff',color:'#333',border:'1px solid #ccc',borderRadius:'4px',boxShadow:'2px 2px 8px rgba(0,0,0,0.1)',fontSize:'13px',zIndex:'999',opacity:'0',transition:'opacity 0.2s'});document.body.appendChild(tip);const trigger=document.createElement('span');trigger.textContent='?';Object.assign(trigger.style,{position:'fixed',top:'10px',right:'10px',fontFamily:'sans-serif',fontSize:'16px',fontWeight:'bold',color:'#333',background:'#fff',border:'1px solid #ccc',padding:'4px 8px',borderRadius:'4px',cursor:'help',zIndex:'999'});document.body.appendChild(trigger);trigger.addEventListener('mouseenter',()=>{tip.textContent='Click big button to start/stop. Click total time once to flag red, again within 5s to reset.';tip.style.opacity='1'});trigger.addEventListener('mouseleave',()=>{tip.style.opacity='0'})})();const favIcon=document.createElement('link');favIcon.rel='icon';document.head.appendChild(favIcon);function updateFavicon(active){const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');canvas.width=canvas.height=64;ctx.fillStyle=active?'#4CAF50':'#000';ctx.beginPath();ctx.arc(32,32,32,0,7);ctx.fill();favIcon.href=canvas.toDataURL()}
+  </script>
 </body>
 </html>
