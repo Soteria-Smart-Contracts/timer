@@ -1,110 +1,97 @@
-<html><head>
+<html>
+<head>
     <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
-    <link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900" onload="this.rel='stylesheet'" rel="stylesheet"/>
+    <link as="style" href="https://fonts.googleapis.com/css2?display=swap&family=Inter%3Awght%40400%3B500%3B700%3B900&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900" onload="this.rel='stylesheet'" rel="stylesheet"/>
     <meta charset="utf-8"/>
     <title>Stitch Design</title>
     <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    </head>
-    <body>
-    <div class="relative flex size-full min-h-screen flex-col bg-[#111418] dark group/design-root overflow-x-hidden" style="--select-button-svg: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724px%27 height=%2724px%27 fill=%27rgb(157,170,184)%27 viewBox=%270 0 256 256%27%3e%3cpath d=%27M181.66,170.34a8,8,0,0,1,0,11.32l-48,48a8,8,0,0,1-11.32,0l-48-48a8,8,0,0,1,11.32-11.32L128,212.69l42.34-42.35A8,8,0,0,1,181.66,170.34Zm-96-84.68L128,43.31l42.34,42.35a8,8,0,0,0,11.32-11.32l-48-48a8,8,0,0,0-11.32,0l-48,48A8,8,0,0,0,85.66,85.66Z%27%3e%3c/path%3e%3c/svg%3e'); font-family: Inter, &quot;Noto Sans&quot;, sans-serif;">
+</head>
+<body>
+<div class="relative flex size-full min-h-screen flex-col bg-[#111418] dark group/design-root overflow-x-hidden" style="--select-button-svg: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724px%27 height=%2724px%27 fill=%27rgb(157,170,184)%27 viewBox=%270 0 256 256%27%3e%3cpath d=%27M181.66,170.34a8,8,0,0,1,0,11.32l-48,48a8,8,0,0,1-11.32,0l-48-48a8,8,0,0,1,11.32-11.32L128,212.69l42.34-42.35A8,8,0,0,1,181.66,170.34Zm-96-84.68L128,43.31l42.34,42.35a8,8,0,0,0,11.32-11.32l-48-48a8,8,0,0,0-11.32,0l-48,48A8,8,0,0,0,85.66,85.66Z%27%3e%3c/path%3e%3c/svg%3e'); font-family: Inter, &quot;Noto Sans&quot;, sans-serif;">
     <div class="layout-container flex h-full grow flex-col">
-    <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#293038] px-10 py-4 shadow-md">
-    <div class="flex items-center gap-4 text-white">
-    <svg class="h-8 w-8 text-[#1978e5]" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-    <path d="M6 6H42L36 24L42 42H6L12 24L6 6Z" fill="currentColor"></path>
-    </svg>
-    <h1 class="text-xl font-bold leading-tight tracking-[-0.015em] text-white">Liminal Bridge</h1>
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#293038] px-10 py-4 shadow-md">
+            <div class="flex items-center gap-4 text-white">
+                <svg class="h-8 w-8 text-[#1978e5]" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 6H42L36 24L42 42H6L12 24L6 6Z" fill="currentColor"></path>
+                </svg>
+                <h1 class="text-xl font-bold leading-tight tracking-[-0.015em] text-white">Liminal Bridge</h1>
+            </div>
+            <nav class="flex justify-end">
+                <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 bg-[#1978e5] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-blue-600 transition-colors">
+                    <span class="truncate">Connect Wallet</span>
+                </button>
+            </nav>
+        </header>
+        <main class="flex flex-1 justify-center py-10 px-4 sm:px-8">
+            <div class="w-full max-w-2xl rounded-xl bg-[#1c2126] p-4 shadow-xl">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold leading-tight tracking-tight text-white">Bridge</h2>
+                    <button class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="h-6 w-6" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex flex-col md:flex-row items-center gap-4">
+                        <div class="relative rounded-lg border border-[#3c4753] bg-[#111418] p-4 flex-1">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-medium text-gray-400">From</span>
+                                <span class="text-xs text-gray-400">Balance: 0.00</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <input class="form-input w-full flex-1 appearance-none border-none bg-transparent p-0 text-2xl font-medium text-white placeholder-gray-500 focus:ring-0" placeholder="0.0" step="any" type="number" value=""/>
+                                <select class="form-select flex-shrink-0 appearance-none rounded-lg border border-[#3c4753] bg-[#1c2126] py-2 px-3 text-sm font-medium text-white hover:border-[#1978e5] focus:border-[#1978e5] focus:outline-none focus:ring-2 focus:ring-[#1978e5] focus:ring-opacity-50">
+                                    <option value="ethereum">Ethereum</option>
+                                    <option value="bsc">BSC</option>
+                                    <option value="polygon">Polygon</option>
+                                </select>
+                                <select class="form-select flex-shrink-0 appearance-none rounded-lg border border-[#3c4753] bg-[#1c2126] py-2 px-3 text-sm font-medium text-white hover:border-[#1978e5] focus:border-[#1978e5] focus:outline-none focus:ring-2 focus:ring-[#1978e5] focus:ring-opacity-50">
+                                    <option value="eth">ETH</option>
+                                    <option value="usdc">USDC</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="flex h-8 w-8 items-center justify-center rounded-md border border-[#3c4753] bg-[#111418] text-gray-400 hover:border-[#1978e5] hover:text-white transition-colors">
+                            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="12" x2="12" y1="5" y2="19"></line>
+                                <polyline points="19 12 12 19 5 12"></polyline>
+                            </svg>
+                        </button>
+                        <div class="relative rounded-lg border border-[#3c4753] bg-[#111418] p-4 flex-1">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-medium text-gray-400">To</span>
+                                <span class="text-xs text-gray-400">Balance: 0.00</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <input class="form-input w-full flex-1 appearance-none border-none bg-transparent p-0 text-2xl font-medium text-white placeholder-gray-500 focus:ring-0" placeholder="0.0" step="any" type="number" value=""/>
+                                <select class="form-select flex-shrink-0 appearance-none rounded-lg border border-[#3c4753] bg-[#1c2126] py-2 px-3 text-sm font-medium text-white hover:border-[#1978e5] focus:border-[#1978e5] focus:outline-none focus:ring-2 focus:ring-[#1978e5] focus:ring-opacity-50">
+                                    <option value="bsc">BSC</option>
+                                    <option value="ethereum">Ethereum</option>
+                                    <option value="polygon">Polygon</option>
+                                </select>
+                                <select class="form-select flex-shrink-0 appearance-none rounded-lg border border-[#3c4753] bg-[#1c2126] py-2 px-3 text-sm font-medium text-white hover:border-[#1978e5] focus:border-[#1978e5] focus:outline-none focus:ring-2 focus:ring-[#1978e5] focus:ring-opacity-50">
+                                    <option value="usdc">USDC</option>
+                                    <option value="eth">ETH</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="flex flex-col">
+                            <span class="text-sm font-medium leading-normal text-gray-300 pb-1">Recipient Address</span>
+                            <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#1978e5] border border-[#3c4753] bg-[#111418] focus:border-[#1978e5] h-10 placeholder:text-[#9daab8] px-3 py-2 text-sm font-normal leading-normal" placeholder="Enter Address (e.g., 0x...)" value=""/>
+                        </label>
+                    </div>
+                    <button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-[#1978e5] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span class="truncate">Send</span>
+                    </button>
+                </div>
+            </div>
+        </main>
     </div>
-    <nav class="flex flex-1 justify-end items-center gap-8">
-    <ul class="flex items-center gap-9">
-    <li><a class="text-sm font-medium leading-normal text-gray-300 hover:text-white transition-colors" href="#">Bridge</a></li>
-    <li><a class="text-sm font-medium leading-normal text-gray-300 hover:text-white transition-colors" href="#">History</a></li>
-    <li><a class="text-sm font-medium leading-normal text-gray-300 hover:text-white transition-colors" href="#">FAQ</a></li>
-    </ul>
-    <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 bg-[#1978e5] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-blue-600 transition-colors">
-    <span class="truncate">Connect Wallet</span>
-    </button>
-    </nav>
-    </header>
-    <main class="flex flex-1 justify-center py-10 px-4 sm:px-8">
-    <div class="w-full max-w-md rounded-xl bg-[#1c2126] p-6 shadow-xl">
-    <div class="flex items-center justify-between mb-6">
-    <h2 class="text-2xl font-bold leading-tight tracking-tight text-white">Bridge</h2>
-    <button class="text-gray-400 hover:text-white transition-colors">
-    <svg class="h-6 w-6" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="12" cy="12" r="3"></circle>
-    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-    </svg>
-    </button>
-    </div>
-    <div class="space-y-4">
-    <div class="relative rounded-lg border border-[#3c4753] bg-[#111418] p-4">
-    <div class="flex justify-between items-center mb-2">
-    <span class="text-xs font-medium text-gray-400">From</span>
-    <span class="text-xs text-gray-400">Balance: 0.00</span>
-    </div>
-    <div class="flex items-center gap-3">
-    <input class="form-input w-full flex-1 appearance-none border-none bg-transparent p-0 text-2xl font-medium text-white placeholder-gray-500 focus:ring-0" placeholder="0.0" step="any" type="number" value=""/>
-    <select class="form-select flex-shrink-0 appearance-none rounded-lg border border-[#3c4753] bg-[#1c2126] py-2 px-3 text-sm font-medium text-white hover:border-[#1978e5] focus:border-[#1978e5] focus:outline-none focus:ring-2 focus:ring-[#1978e5] focus:ring-opacity-50">
-    <option value="ethereum">Ethereum</option>
-    <option value="bsc">BSC</option>
-    <option value="polygon">Polygon</option>
-    </select>
-    <select class="form-select flex-shrink-0 appearance-none rounded-lg border border-[#3c4753] bg-[#1c2126] py-2 px-3 text-sm font-medium text-white hover:border-[#1978e5] focus:border-[#1978e5] focus:outline-none focus:ring-2 focus:ring-[#1978e5] focus:ring-opacity-50">
-    <option value="eth">ETH</option>
-    <option value="usdc">USDC</option>
-    </select>
-    </div>
-    </div>
-    <div class="flex justify-center">
-    <button class="flex h-8 w-8 items-center justify-center rounded-md border border-[#3c4753] bg-[#111418] text-gray-400 hover:border-[#1978e5] hover:text-white transition-colors">
-    <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
-    <line x1="12" x2="12" y1="5" y2="19"></line>
-    <polyline points="19 12 12 19 5 12"></polyline>
-    </svg>
-    </button>
-    </div>
-    <div class="relative rounded-lg border border-[#3c4753] bg-[#111418] p-4">
-    <div class="flex justify-between items-center mb-2">
-    <span class="text-xs font-medium text-gray-400">To</span>
-    <span class="text-xs text-gray-400">Balance: 0.00</span>
-    </div>
-    <div class="flex items-center gap-3">
-    <input class="form-input w-full flex-1 appearance-none border-none bg-transparent p-0 text-2xl font-medium text-white placeholder-gray-500 focus:ring-0" placeholder="0.0" step="any" type="number" value=""/>
-    <select class="form-select flex-shrink-0 appearance-none rounded-lg border border-[#3c4753] bg-[#1c2126] py-2 px-3 text-sm font-medium text-white hover:border-[#1978e5] focus:border-[#1978e5] focus:outline-none focus:ring-2 focus:ring-[#1978e5] focus:ring-opacity-50">
-    <option value="bsc">BSC</option>
-    <option value="ethereum">Ethereum</option>
-    <option value="polygon">Polygon</option>
-    </select>
-    <select class="form-select flex-shrink-0 appearance-none rounded-lg border border-[#3c4753] bg-[#1c2126] py-2 px-3 text-sm font-medium text-white hover:border-[#1978e5] focus:border-[#1978e5] focus:outline-none focus:ring-2 focus:ring-[#1978e5] focus:ring-opacity-50">
-    <option value="usdc">USDC</option>
-    <option value="eth">ETH</option>
-    </select>
-    </div>
-    </div>
-    <div class="space-y-2 pt-2">
-    <label class="flex flex-col">
-    <span class="text-sm font-medium leading-normal text-gray-300 pb-1">Recipient Address</span>
-    <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#1978e5] border border-[#3c4753] bg-[#111418] focus:border-[#1978e5] h-10 placeholder:text-[#9daab8] px-3 py-2 text-sm font-normal leading-normal" placeholder="Enter Address (e.g., 0x...)" value=""/>
-    </label>
-    </div>
-    <button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-[#1978e5] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4">
-    <span class="truncate">Send</span>
-    </button>
-    </div>
-    </div>
-    </main>
-    <footer class="border-t border-solid border-t-[#293038] py-8 text-center">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <p class="text-sm text-[#9daab8]">© 2024 Liminal Bridge. All rights reserved.</p>
-    <div class="mt-4 flex justify-center space-x-6">
-    <a class="text-sm text-gray-400 hover:text-gray-300 transition-colors" href="#">Privacy Policy</a>
-    <a class="text-sm text-gray-400 hover:text-gray-300 transition-colors" href="#">Terms of Service</a>
-    </div>
-    </div>
-    </footer>
-    </div>
-    </div>
-    
-    </body></html>
+</div>
+</body>
+</html>
