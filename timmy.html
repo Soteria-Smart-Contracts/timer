@@ -1,97 +1,38 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Liminal Bridge</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
 <style>
-        body {
-            font-family: 'Inter', sans-serif;}
-        .glassmorphism {
-            background: rgba(255, 255, 255, 0.1);backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);}
-    </style>
+body{font-family:'Inter',sans-serif;}
+.glassmorphism{background:rgba(255,255,255,.1);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);border:1px solid rgba(255,255,255,.2);}
+</style>
 </head>
 <body class="bg-gray-900 text-white flex flex-col min-h-screen items-center justify-center">
 <header class="fixed top-0 left-0 right-0 z-10 bg-gray-900 bg-opacity-80 backdrop-blur-md">
 <div class="container mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex items-center justify-between h-16">
-<div class="flex items-center">
-<span class="material-icons text-blue-500 text-3xl mr-2">waves</span>
-<span class="font-bold text-xl">Liminal Bridge</span>
-</div>
-<div class="flex items-center space-x-4">
-<button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg text-sm">
-                        Connect Wallet
-                    </button>
-</div>
+<div class="flex items-center"><span class="material-icons text-blue-500 text-3xl mr-2">waves</span><span class="font-bold text-xl">Liminal Bridge</span></div>
+<div class="flex items-center space-x-4"><button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg text-sm">Connect Wallet</button></div>
 </div>
 </div>
 </header>
 <main class="flex-grow flex flex-col items-center justify-center w-full px-4 sm:px-6 lg:px-8 pt-20 pb-10">
 <div class="bg-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-md">
-<div class="flex justify-between items-center mb-6">
-<h2 class="text-2xl font-semibold">Bridge</h2>
-<button class="text-gray-400 hover:text-white">
-<span class="material-icons">settings</span>
-</button>
-</div>
+<div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-semibold">Bridge</h2><button class="text-gray-400 hover:text-white"><span class="material-icons">settings</span></button></div>
 <div class="space-y-4">
-<div>
-<label class="block text-sm font-medium text-gray-400 mb-1" for="from-amount">From</label>
-<div class="flex items-center bg-gray-700 rounded-lg p-3">
-<input class="w-full bg-transparent text-xl focus:outline-none placeholder-gray-500" id="from-amount" placeholder="0.0" type="text" value="0.0"/>
-<div class="flex items-center space-x-2 ml-3">
-<button class="bg-gray-600 hover:bg-gray-500 text-xs py-1 px-2 rounded-md flex items-center">
-                                BSC <span class="material-icons text-sm ml-1">expand_more</span>
-</button>
-<button class="bg-gray-900 text-xs py-1 px-2 rounded-md">ETH</button>
+<div><label class="block text-sm font-medium text-gray-400 mb-1" for="from-amount">From</label><div class="flex items-center bg-gray-700 rounded-lg p-3"><input class="w-full bg-transparent text-xl focus:outline-none placeholder-gray-500" id="from-amount" placeholder="0.0" type="text" value="0.0"/><div class="flex items-center space-x-2 ml-3"><button class="bg-gray-600 hover:bg-gray-500 text-xs py-1 px-2 rounded-md flex items-center">BSC<span class="material-icons text-sm ml-1">expand_more</span></button><button class="bg-gray-900 text-xs py-1 px-2 rounded-md">ETH</button></div></div><div class="text-xs text-gray-500 text-right mt-1">Balance: 0.00</div></div>
+<div class="flex justify-center"><button class="bg-gray-700 hover:bg-gray-600 p-2 rounded-full"><span class="material-icons">arrow_downward</span></button></div>
+<div><label class="block text-sm font-medium text-gray-400 mb-1" for="to-amount">To</label><div class="flex items-center bg-gray-700 rounded-lg p-3"><input class="w-full bg-transparent text-xl focus:outline-none placeholder-gray-500" id="to-amount" placeholder="0.0" type="text" value="0.0"/><div class="flex items-center space-x-2 ml-3"><button class="bg-gray-600 hover:bg-gray-500 text-xs py-1 px-2 rounded-md flex items-center">BSC<span class="material-icons text-sm ml-1">expand_more</span></button><button class="bg-gray-900 text-xs py-1 px-2 rounded-md">ETH</button></div></div><div class="text-xs text-gray-500 text-right mt-1">Balance: 0.00</div></div>
+<div><label class="block text-sm font-medium text-gray-400 mb-1" for="recipient-address">Recipient Address</label><input class="w-full bg-gray-700 rounded-lg p-3 text-sm focus:outline-none placeholder-gray-500" id="recipient-address" placeholder="Enter Address (e.g., 0x...)" type="text"/></div>
+<button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition duration-150 ease-in-out">Send</button>
 </div>
 </div>
-<div class="text-xs text-gray-500 text-right mt-1">Balance: 0.00</div>
-</div>
-<div class="flex justify-center">
-<button class="bg-gray-700 hover:bg-gray-600 p-2 rounded-full">
-<span class="material-icons">arrow_downward</span>
-</button>
-</div>
-<div>
-<label class="block text-sm font-medium text-gray-400 mb-1" for="to-amount">To</label>
-<div class="flex items-center bg-gray-700 rounded-lg p-3">
-<input class="w-full bg-transparent text-xl focus:outline-none placeholder-gray-500" id="to-amount" placeholder="0.0" type="text" value="0.0"/>
-<div class="flex items-center space-x-2 ml-3">
-<button class="bg-gray-600 hover:bg-gray-500 text-xs py-1 px-2 rounded-md flex items-center">
-                                BSC <span class="material-icons text-sm ml-1">expand_more</span>
-</button>
-<button class="bg-gray-900 text-xs py-1 px-2 rounded-md">ETH</button>
-</div>
-</div>
-<div class="text-xs text-gray-500 text-right mt-1">Balance: 0.00</div>
-</div>
-<div>
-<label class="block text-sm font-medium text-gray-400 mb-1" for="recipient-address">Recipient Address</label>
-<input class="w-full bg-gray-700 rounded-lg p-3 text-sm focus:outline-none placeholder-gray-500" id="recipient-address" placeholder="Enter Address (e.g., 0x...)" type="text"/>
-</div>
-<button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition duration-150 ease-in-out">
-                    Send
-                </button>
-</div>
-</div>
-<div class="w-full max-w-md mt-8">
-<h3 class="text-xl font-semibold mb-4 text-center">Transactions</h3>
-<div class="glassmorphism p-6 rounded-xl h-48 flex items-center justify-center">
-<p class="text-gray-400">Transaction history will appear here.</p>
-</div>
-</div>
+<div class="w-full max-w-md mt-8"><h3 class="text-xl font-semibold mb-4 text-center">Transactions</h3><div class="glassmorphism p-6 rounded-xl h-48 flex items-center justify-center"><p class="text-gray-400">Transaction history will appear here.</p></div></div>
 </main>
-<footer class="w-full py-6 text-center text-gray-500 text-sm">
-<p>© 2024 Liminal Bridge. All rights reserved.</p>
-<div class="mt-1">
-<a class="hover:text-gray-300" href="#">Privacy Policy</a> ·
-            <a class="hover:text-gray-300" href="#">Terms of Service</a>
-</div>
-</footer>
-
-</body></html>
+<footer class="w-full py-6 text-center text-gray-500 text-sm"><p>© 2024 Liminal Bridge. All rights reserved.</p><div class="mt-1"><a class="hover:text-gray-300" href="#">Privacy Policy</a>·<a class="hover:text-gray-300" href="#">Terms of Service</a></div></footer>
+</body>
+</html>
