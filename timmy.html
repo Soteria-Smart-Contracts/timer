@@ -8,7 +8,13 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
 <style>
 body{font-family:'Inter',sans-serif;}
-.glassmorphism{background:rgba(255,255,255,.1);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);border:1px solid rgba(255,255,255,.2);}
+.glassmorphism{background:transparent;border:1px solid rgba(255,255,255,.2);}
+.dropdown-btn{background-color:#4a5568;padding:0.25rem 0.75rem;border-radius:0.375rem;transition:all 0.3s ease;}
+.dropdown-btn:hover{background-color:#2d3748;}
+.dropdown-menu{display:none;position:absolute;background-color:#2d3748;border-radius:0.375rem;padding:0.25rem 0;box-shadow:0 4px 6px rgba(0,0,0,0.1);z-index:10;}
+.dropdown-menu.show{display:block;}
+.dropdown-item{padding:0.25rem 0.75rem;color:#e2e8f0;cursor:pointer;}
+.dropdown-item:hover{background-color:#4a5568;}
 </style>
 </head>
 <body class="bg-gray-900 text-white flex flex-col min-h-screen items-center justify-center">
@@ -21,12 +27,12 @@ body{font-family:'Inter',sans-serif;}
 </div>
 </header>
 <main class="flex-grow flex flex-col items-center justify-center w-full px-4 sm:px-6 lg:px-8 pt-20 pb-10">
-<div class="bg-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-md">
+<div class="bg-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-2xl aspect-[2/1]">
 <div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-semibold">Bridge</h2><button class="text-gray-400 hover:text-white"><span class="material-icons">settings</span></button></div>
 <div class="space-y-4">
-<div><label class="block text-sm font-medium text-gray-400 mb-1" for="from-amount">From</label><div class="flex items-center bg-gray-700 rounded-lg p-3"><input class="w-full bg-transparent text-xl focus:outline-none placeholder-gray-500" id="from-amount" placeholder="0.0" type="text" value="0.0"/><div class="flex items-center space-x-2 ml-3"><button class="bg-gray-600 hover:bg-gray-500 text-xs py-1 px-2 rounded-md flex items-center">BSC<span class="material-icons text-sm ml-1">expand_more</span></button><button class="bg-gray-900 text-xs py-1 px-2 rounded-md">ETH</button></div></div><div class="text-xs text-gray-500 text-right mt-1">Balance: 0.00</div></div>
-<div class="flex justify-center"><button class="bg-gray-700 hover:bg-gray-600 p-2 rounded-full"><span class="material-icons">arrow_downward</span></button></div>
-<div><label class="block text-sm font-medium text-gray-400 mb-1" for="to-amount">To</label><div class="flex items-center bg-gray-700 rounded-lg p-3"><input class="w-full bg-transparent text-xl focus:outline-none placeholder-gray-500" id="to-amount" placeholder="0.0" type="text" value="0.0"/><div class="flex items-center space-x-2 ml-3"><button class="bg-gray-600 hover:bg-gray-500 text-xs py-1 px-2 rounded-md flex items-center">BSC<span class="material-icons text-sm ml-1">expand_more</span></button><button class="bg-gray-900 text-xs py-1 px-2 rounded-md">ETH</button></div></div><div class="text-xs text-gray-500 text-right mt-1">Balance: 0.00</div></div>
+<div><label class="block text-sm font-medium text-gray-400 mb-1" for="from-amount">From</label><div class="flex items-center bg-gray-700 rounded-lg p-3"><input class="w-full bg-transparent text-xl focus:outline-none placeholder-gray-500" id="from-amount" placeholder="0.0" type="text" value="0.0"/><div class="relative ml-3"><button class="dropdown-btn flex items-center space-x-2" id="from-chain-btn"><span class="w-5 h-5 bg-gray-500" id="from-chain-logo"></span><span>Bittensor EVM</span><span class="material-icons text-sm ml-1">expand_more</span></button><div class="dropdown-menu" id="from-chain-menu"><div class="dropdown-item" onclick="document.getElementById('from-chain-btn').childNodes[1].textContent='Bittensor EVM';document.getElementById('from-chain-menu').classList.remove('show');">Bittensor EVM</div><div class="dropdown-item" onclick="document.getElementById('from-chain-btn').childNodes[1].textContent='Base EVM';document.getElementById('from-chain-menu').classList.remove('show');">Base EVM</div></div><button class="dropdown-btn flex items-center space-x-2 mt-1" id="from-token-btn"><span class="w-5 h-5 bg-gray-500" id="from-token-logo"></span><span>wBTC</span><span class="material-icons text-sm ml-1">expand_more</span></button><div class="dropdown-menu" id="from-token-menu"><div class="dropdown-item" onclick="document.getElementById('from-token-btn').childNodes[1].textContent='wBTC';document.getElementById('from-token-menu').classList.remove('show');">wBTC</div><div class="dropdown-item" onclick="document.getElementById('from-token-btn').childNodes[1].textContent='USDC';document.getElementById('from-token-menu').classList.remove('show');">USDC</div><div class="dropdown-item" onclick="document.getElementById('from-token-btn').childNodes[1].textContent='USDT';document.getElementById('from-token-menu').classList.remove('show');">USDT</div><div class="dropdown-item" onclick="document.getElementById('from-token-btn').childNodes[1].textContent='wETH';document.getElementById('from-token-menu').classList.remove('show');">wETH</div></div></div></div><div class="text-xs text-gray-500 text-right mt-1">Balance: 0.00</div></div>
+<div class="flex justify-center"><button class="bg-gray-minister-700 hover:bg-gray-600 p-2 rounded-full"><span class="material-icons">arrow_downward</span></button></div>
+<div><label class="block text-sm font-medium text-gray-400 mb-1" for="to-amount">To</label><div class="flex items-center bg-gray-700 rounded-lg p-3"><input class="w-full bg-transparent text-xl focus:outline-none placeholder-gray-500" id="to-amount" placeholder="0.0" type="text" value="0.0"/><div class="relative ml-3"><button class="dropdown-btn flex items-center space-x-2" id="to-chain-btn"><span class="w-5 h-5 bg-gray-500" id="to-chain-logo"></span><span>Bittensor EVM</span><span class="material-icons text-sm ml-1">expand_more</span></button><div class="dropdown-menu" id="to-chain-menu"><div class="dropdown-item" onclick="document.getElementById('to-chain-btn').childNodes[1].textContent='Bittensor EVM';document.getElementById('to-chain-menu').classList.remove('show');">Bittensor EVM</div><div class="dropdown-item" onclick="document.getElementById('to-chain-btn').childNodes[1].textContent='Base EVM';document.getElementById('to-chain-menu').classList.remove('show');">Base EVM</div></div><button class="dropdown-btn flex items-center space-x-2 mt-1" id="to-token-btn"><span class="w-5 h-5 bg-gray-500" id="to-token-logo"></span><span>wBTC</span><span class="material-icons text-sm ml-1">expand_more</span></button><div class="dropdown-menu" id="to-token-menu"><div class="dropdown-item" onclick="document.getElementById('to-token-btn').childNodes[1].textContent='wBTC';document.getElementById('to-token-menu').classList.remove('show');">wBTC</div><div class="dropdown-item" onclick="document.getElementById('to-token-btn').childNodes[1].textContent='USDC';document.getElementById('to-token-menu').classList.remove('show');">USDC</div><div class="dropdown-item" onclick="document.getElementById('to-token-btn').childNodes[1].textContent='USDT';document.getElementById('to-token-menu').classList.remove('show');">USDT</div><div class="dropdown-item" onclick="document.getElementById('to-token-btn').childNodes[1].textContent='wETH';document.getElementById('to-token-menu').classList.remove('show');">wETH</div></div></div></div><div class="text-xs text-gray-500 text-right mt-1">Balance: 0.00</div></div>
 <div><label class="block text-sm font-medium text-gray-400 mb-1" for="recipient-address">Recipient Address</label><input class="w-full bg-gray-700 rounded-lg p-3 text-sm focus:outline-none placeholder-gray-500" id="recipient-address" placeholder="Enter Address (e.g., 0x...)" type="text"/></div>
 <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition duration-150 ease-in-out">Send</button>
 </div>
@@ -34,5 +40,18 @@ body{font-family:'Inter',sans-serif;}
 <div class="w-full max-w-md mt-8"><h3 class="text-xl font-semibold mb-4 text-center">Transactions</h3><div class="glassmorphism p-6 rounded-xl h-48 flex items-center justify-center"><p class="text-gray-400">Transaction history will appear here.</p></div></div>
 </main>
 <footer class="w-full py-6 text-center text-gray-500 text-sm"><p>© 2024 Liminal Bridge. All rights reserved.</p><div class="mt-1"><a class="hover:text-gray-300" href="#">Privacy Policy</a>·<a class="hover:text-gray-300" href="#">Terms of Service</a></div></footer>
+<script>
+document.querySelectorAll('.dropdown-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const menu = btn.nextElementSibling;
+    menu.classList.toggle('show');
+  });
+});
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.dropdown-btn')) {
+    document.querySelectorAll('.dropdown-menu').forEach(menu => menu.classList.remove('show'));
+  }
+});
+</script>
 </body>
 </html>
