@@ -1,11 +1,20 @@
 <html>
 <head>
-    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
-    <link as="style" href="https://fonts.googleapis.com/css2?display=swap&family=Inter%3Awght%40400%3B500%3B700%3B900&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900" onload="this.rel='stylesheet'" rel="stylesheet"/>
+    <link crossorigin="" href="https://fonts.gstatic.com/   " rel="preconnect"/>
+    <link as="style" href="https://fonts.googleapis.com/css2?display=swap&family=Inter%3Awght%40400%3B500%3B700%3B900&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900   " onload="this.rel='stylesheet'" rel="stylesheet"/>
     <meta charset="utf-8"/>
     <title>Stitch Design</title>
     <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.tailwindcss.com   ?plugins=forms,container-queries"></script>
+    <style>
+        /* Hide select arrow in all modern browsers */
+        .form-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: none;
+        }
+    </style>
 </head>
 <body>
 <div class="relative flex size-full flex-col bg-[#0A0A0A] dark group/design-root overflow-x-hidden" style="--select-button-svg: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724px%27 height=%2724px%27 fill=%27rgb(157,170,184)%27 viewBox=%270 0 256 256%27%3e%3cpath d=%27M181.66,170.34a8,8,0,0,1,0,11.32l-48,48a8,8,0,0,1-11.32,0l-48-48a8,8,0,0,1,11.32-11.32L128,212.69l42.34-42.35A8,8,0,0,1,181.66,170.34Zm-96-84.68L128,43.31l42.34,42.35a8,8,0,0,0,11.32-11.32l-48-48a8,8,0,0,0-11.32,0l-48,48A8,8,0,0,0,85.66,85.66Z%27%3e%3c/path%3e%3c/svg%3e'); font-family: Inter, 'Noto Sans', sans-serif;">
@@ -24,7 +33,7 @@
             </nav>
         </header>
         <main class="flex flex-1 items-center justify-center py-4 px-4 sm:px-8">
-            <div class="w-full max-w-2xl rounded-xl bg-[#1A1A1A] p-4 shadow-xl h-auto">
+            <div class="w-full max-w-2xl rounded-xl bg-[#1A1A1A] p-5 shadow-xl h-auto"> <!-- increased padding -->
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-2xl font-bold leading-tight tracking-tight text-white">Bridge</h2>
                     <button class="text-gray-400 hover:text-white transition-colors">
@@ -34,7 +43,7 @@
                         </svg>
                     </button>
                 </div>
-                <div class="space-y-4">
+                <div class="space-y-4 mb-5"> <!-- added extra margin-bottom here -->
                     <div class="flex flex-col md:flex-row items-center gap-4">
                         <div class="relative rounded-lg border border-[#2A2A2A] bg-[#141414] p-4 flex-1">
                             <div class="flex justify-between items-center mb-2">
@@ -43,12 +52,12 @@
                             </div>
                             <div class="flex items-center gap-3">
                                 <input class="form-input w-full flex-1 appearance-none border-none bg-transparent p-0 text-2xl font-medium text-white placeholder-gray-500 focus:ring-0" placeholder="0.0" step="any" type="number" value=""/>
-                                <select class="form-select flex-shrink-0 appearance-none rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] py-2 px-3 text-sm font-medium text-white hover:border-[#00C4B4] focus:border-[#00C4B4] focus:outline-none focus:ring-2 focus:ring-[#00C4B4] focus:ring-opacity-50">
+                                <select class="form-select flex-shrink-0 rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] py-2 px-3 text-sm font-medium text-white hover:border-[#00C4B4] focus:border-[#00C4B4] focus:outline-none focus:ring-2 focus:ring-[#00C4B4] focus:ring-opacity-50">
                                     <option value="ethereum">Ethereum</option>
                                     <option value="bsc">BSC</option>
                                     <option value="polygon">Polygon</option>
                                 </select>
-                                <select class="form-select flex-shrink-0 appearance-none rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] py-2 px-3 text-sm font-medium text-white hover:border-[#00C4B4] focus:border-[#00C4B4] focus:outline-none focus:ring-2 focus:ring-[#00C4B4] focus:ring-opacity-50">
+                                <select class="form-select flex-shrink-0 rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] py-2 px-3 text-sm font-medium text-white hover:border-[#00C4B4] focus:border-[#00C4B4] focus:outline-none focus:ring-2 focus:ring-[#00C4B4] focus:ring-opacity-50">
                                     <option value="eth">ETH</option>
                                     <option value="usdc">USDC</option>
                                 </select>
@@ -67,28 +76,22 @@
                             </div>
                             <div class="flex items-center gap-3">
                                 <input class="form-input w-full flex-1 appearance-none border-none bg-transparent p-0 text-2xl font-medium text-white placeholder-gray-500 focus:ring-0" placeholder="0.0" step="any" type="number" value=""/>
-                                <select class="form-select flex-shrink-0 appearance-none rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] py-2 px-3 text-sm font-medium text-white hover:border-[#00C4B4] focus:border-[#00C4B4] focus:outline-none focus:ring-2 focus:ring-[#00C4B4] focus:ring-opacity-50">
+                                <select class="form-select flex-shrink-0 rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] py-2 px-3 text-sm font-medium text-white hover:border-[#00C4B4] focus:border-[#00C4B4] focus:outline-none focus:ring-2 focus:ring-[#00C4B4] focus:ring-opacity-50">
                                     <option value="bsc">BSC</option>
                                     <option value="ethereum">Ethereum</option>
                                     <option value="polygon">Polygon</option>
                                 </select>
-                                <select class="form-select flex-shrink-0 appearance-none rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] py-2 px-3 text-sm font-medium text-white hover:border-[#00C4B4] focus:border-[#00C4B4] focus:outline-none focus:ring-2 focus:ring-[#00C4B4] focus:ring-opacity-50">
+                                <select class="form-select flex-shrink-0 rounded-lg border border-[#2A2A2A] bg-[#1A1A1A] py-2 px-3 text-sm font-medium text-white hover:border-[#00C4B4] focus:border-[#00C4B4] focus:outline-none focus:ring-2 focus:ring-[#00C4B4] focus:ring-opacity-50">
                                     <option value="usdc">USDC</option>
                                     <option value="eth">ETH</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <div class="space-y-2">
-                        <label class="flex flex-col">
-                            <span class="text-sm font-medium leading-normal text-gray-300 pb-1">Recipient Address</span>
-                            <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#00C4B4] border border-[#2A2A2A] bg-[#141414] focus:border-[#00C4B4] h-10 placeholder:text-[#A0A0A0] px-3 py-2 text-sm font-normal leading-normal" placeholder="Enter Address (e.g., 0x...)" value=""/>
-                        </label>
-                    </div>
-                    <button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-[#00C4B4] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#00A89A] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                        <span class="truncate">Send</span>
-                    </button>
                 </div>
+                <button class="flex w-1/2 mx-auto cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-[#00C4B4] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#00A89A] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span class="truncate">Send</span>
+                </button>
             </div>
         </main>
     </div>
