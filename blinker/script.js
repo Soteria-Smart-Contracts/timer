@@ -4,19 +4,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let totalBlinkersToday = 0;
     let highScore = 0;
     let isBlinking = false;
-    let activePlotIndex = null;
 
     // Load saved states from storage
-    chrome.storage.local.get(['treeStates', 'totalBlinkersToday', 'highScore'], initExtension);
-
-    function initExtension({ treeStates: ts, totalBlinkersToday: tb, highScore: hs }) {
+    chrome.storage.local.get(['treeStates', 'totalBlinkersToday', 'highScore'], ({ treeStates: ts, totalBlinkersToday: tb, highScore: hs }) => {
         treeStates = ts || {};
         totalBlinkersToday = tb || 0;
         highScore = hs || 0;
         updatePlots();
         updateBlinkStats();
         resetDailyCountAtMidnight();
-    }
+    });
 
     // Update the plots to reflect the current state of trees
     function updatePlots() {
@@ -116,10 +113,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearInterval(interval);
                 overlay.style.display = 'none';
                 isBlinking = false;
-                activePlotIndex = null;
                 updateBlinkStats();
                 setTimeout(() => {
-                    treeStates[activePlotIndex].dead = true;
+                    treeStates[index].dead = true;
                     chrome.storage.local.set({ treeStates }, () => {
                         console.log('Tree died!');
                     });
@@ -130,27 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 200);
     }
 
-    // Cancel the current blinker
-    function cancelBlinker(index) {
-        isBlinking = false;
-        activePlotIndex = null;
-        const plot = plots[index];
-        plot.classList.remove('active');
-        plot.innerHTML = '';
-        document.getElementById('countdown-overlay').style.display = 'none';
-
-        if (treeStates[index] && treeStates[index].planted && !treeStates[index].dead) {
-            totalBlinkersToday--;
-            if (totalBlinkersToday < highScore) {
-                highScore = totalBlinkersToday;
-            }
-            chrome.storage.local.set({ totalBlinkersToday, highScore }, () => {
-                console.log('Blinker canceled!');
-            });
-            updateBlinkStats();
-        }
-    }
-
     // Reset daily blink count at midnight
     function resetDailyCountAtMidnight() {
         const now = new Date();
@@ -159,7 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             totalBlinkersToday = 0;
-            chrome.storage.local.set({ totalBlinkersToday }, () => {
+            highScore = 0; // Reset high score if today's count was the highest
+            chrome.storage.local.set({ totalBlinkersToday, highScore }, () => {
                 console.log('Daily blink count reset at midnight!');
             });
             updateBlinkStats();
@@ -170,11 +146,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listeners for plots
     plots.forEach((plot, index) => {
         plot.addEventListener('click', () => {
-            if (isBlinking && activePlotIndex === index) {
-                cancelBlinker(index);
-            } else if (!isBlinking && (!treeStates[index] || treeStates[index].dead)) {
+            if (!isBlinking && (!treeStates[index] || treeStates[index].dead)) {
                 isBlinking = true;
-                activePlotIndex = index;
                 startCountdown(plot, index);
             }
         });
