@@ -254,7 +254,7 @@ function displayGnome() {
 
     const img = document.createElement('img');
     img.src = 'gnome.jpg';
-    img.style.width = '100px';
+    img.style.width = '175px';
     img.style.height = 'auto';
     img.style.margin = '0 auto 10px';
 
