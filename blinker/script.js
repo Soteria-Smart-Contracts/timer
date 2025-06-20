@@ -36,10 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Start the countdown overlay
-    function startCountdown(plot, index) {
+    async function startCountdown(plot, index) {
         const overlay = document.getElementById('countdown-overlay');
         const text = document.getElementById('countdown-text');
-        overlay.style.backgroundColor = rgba(0, 0, 0, 0.5);
+        overlay.style.backgroundColor = await rgba(0, 0, 0, 0.5);
         let values = ['Ready', 'Set', 'Go'];
         let i = 0;
 
