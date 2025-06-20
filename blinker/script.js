@@ -264,6 +264,7 @@ function displayGnome() {
     message.style.textAlign = 'center';
     message.style.fontSize = '24px';
     message.style.fontWeight = 'bold';
+    message.style.marginTop = '10px';
 
     overlay.innerHTML = '';
     overlay.appendChild(img);
