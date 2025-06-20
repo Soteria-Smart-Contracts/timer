@@ -12,6 +12,10 @@ body {
     width: 100%;
     perspective: 1000px;
     margin-bottom: 20px; /* Add space for extra details */
+    border: 2px solid #00cc00;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #00cc00; /* Slightly darker green */
   }
   
   .field {
@@ -28,6 +32,9 @@ body {
     position: relative;
     cursor: pointer;
     transition: transform 0.3s ease;
+    border: 1px solid #008000;
+    border-radius: 5px;
+    background-color: #009900;
   }
   
   .plot:hover {
@@ -114,4 +121,16 @@ body {
     background-color: #00cc00; /* Slightly darker green */
     padding: 10px;
     border-radius: 5px;
+    border: 1px solid #008000;
+  }
+  
+  #total-blinkers {
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+    margin-top: 10px;
+    border: 1px solid #008000;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #00cc00; /* Slightly darker green */
   }

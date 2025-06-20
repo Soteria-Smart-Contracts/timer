@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
           chrome.storage.local.set({ treeStates: treeStates }, () => {
             console.log('Tree planted!');
           });
+          timerElement.textContent = 'Planted!';
           setTimeout(() => {
             treeStates[index].dead = true;
             chrome.storage.local.set({ treeStates: treeStates }, () => {
