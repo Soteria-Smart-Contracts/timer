@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const overlay = document.getElementById('countdown-overlay');
         const text = document.getElementById('countdown-text');
         overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+        text.style.color = 'white';
         let values = ['Ready', 'Set', 'Go'];
         let i = 0;
 
