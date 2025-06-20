@@ -273,3 +273,20 @@ function displayGnome() {
         overlay.innerHTML = ''; // Clear the overlay content
     }, 5000); // Display for 5 seconds
 }
+
+    // Get a random gnome message
+    function getRandomGnomeMessage() {
+        const messages = [
+            "Keep it up, Blinker Buddy! 🌟",
+            "You're a true Blinker Champion! 🏆",
+            "Blinking brilliance! Keep it going! 💫",
+            "You're a Blinker Legend! 🌈",
+              "Blinking your way to greatness! 🚀",
+              "Blinker power! You're unstoppable! 💪",
+              "Blinking for a brighter tomorrow! 🌞",
+              "Your blinking skills are unmatched! 🥇",
+              "Blinking with style and grace! 🎩",
+              "You're the Blinker Master! 👑"
+        ];
+        return messages[Math.floor(Math.random() * messages.length)];
+    }
