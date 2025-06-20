@@ -242,3 +242,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+function displayGnome() {
+    const overlay = document.getElementById('countdown-overlay');
+    const text = document.getElementById('countdown-text');
+    overlay.style.display = 'flex';
+    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+    overlay.style.justifyContent = 'center';
+    overlay.style.alignItems = 'center';
+    overlay.style.flexDirection = 'column';
+
+    const img = document.createElement('img');
+    img.src = 'gnome.jpg';
+    img.style.width = '100px';
+    img.style.height = 'auto';
+    img.style.margin = '0 auto 10px';
+
+    const message = document.createElement('div');
+    message.textContent = getRandomGnomeMessage();
+    message.style.color = 'white';
+    message.style.textAlign = 'center';
+    message.style.fontSize = '18px';
+
+    overlay.innerHTML = '';
+    overlay.appendChild(img);
+    overlay.appendChild(message);
+
+    setTimeout(() => {
+        overlay.style.display = 'none';
+        overlay.innerHTML = ''; // Clear the overlay content
+    }, 5000); // Display for 5 seconds
+}
