@@ -101,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const overlay = document.getElementById('countdown-overlay');
         const text = document.getElementById('countdown-text');
         overlay.style.display = 'flex';
-        overlay.style.opacity = '1';
         text.textContent = 'BLINKER';
 
         let i = 0;
@@ -125,11 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 7200000);
             }
         }, 200);
-
-        overlay.style.backgroundColor = 'black';
-        overlay.style.opacity = '0.5';
-        text.style.color = 'white';
-
     }
 
     // Reset daily blink count at midnight
