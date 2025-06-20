@@ -101,6 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const overlay = document.getElementById('countdown-overlay');
         const text = document.getElementById('countdown-text');
         overlay.style.display = 'flex';
+        overlay.style.opacity = '1';
         text.textContent = 'BLINKER';
 
         let i = 0;
