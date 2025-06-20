@@ -271,7 +271,7 @@ function displayGnome() {
     setTimeout(() => {
         overlay.style.display = 'none';
         overlay.innerHTML = ''; // Clear the overlay content
-    }, 5000); // Display for 5 seconds
+    }, 10000); // Display for 5 seconds
 }
 
     // Get a random gnome message
