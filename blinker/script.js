@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             plot.classList.remove('active');
             plot.removeChild(timerElement);
             isBlinking = false; // Allow another blink
-          }, 7200000); // 2 hours
+          }, 120000); // 2 hours
         }
       }, 100);
     }
