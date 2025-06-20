@@ -17,12 +17,16 @@ body {
     padding: 10px;
     border-radius: 10px;
     background-color: #00cc00; /* Slightly darker green */
+    overflow: hidden; /* Ensure no overflow */
   }
   
   .field {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr); /* Reduced to 3 columns */
     gap: 10px;
+    justify-content: center; /* Center the grid horizontally */
+    align-items: center; /* Center the grid vertically */
+    margin: 0 auto; /* Center the grid */
   }
   
   .plot {
