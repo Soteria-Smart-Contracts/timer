@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let totalBlinkersToday = 0;
     let highScore = 0;
     let isBlinking = false; // Flag to ensure only one blinker at a time
+    let activePlotIndex = null; // Track the currently active plot index
 
     // Load saved states from storage
     chrome.storage.local.get(['treeStates', 'totalBlinkersToday', 'highScore'], (result) => {
@@ -53,8 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     plots.forEach((plot, index) => {
         plot.addEventListener('click', () => {
-            if (!isBlinking && (!treeStates[index] || treeStates[index].dead)) {
+            if (isBlinking && activePlotIndex === index) {
+                // Cancel the current blinker
+                cancelBlinker(index);
+            } else if (!isBlinking && (!treeStates[index] || treeStates[index].dead)) {
                 isBlinking = true;
+                activePlotIndex = index;
                 startCountdown(plot, index);
             }
         });
@@ -143,6 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearInterval(flashInterval);
                 countdownOverlay.style.display = 'none';
                 isBlinking = false; // Allow another blink
+                activePlotIndex = null; // Reset active plot index
                 updateBlinkStats();
                 setTimeout(() => {
                     treeStates[index].dead = true;
@@ -159,6 +165,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 200); // Flash every 200ms
     }
 
+    function cancelBlinker(index) {
+        isBlinking = false; // Allow another blink
+        activePlotIndex = null; // Reset active plot index
+        const plot = plots[index];
+        plot.classList.remove('active');
+        const timerElement = plot.querySelector('.timer');
+        if (timerElement) {
+            plot.removeChild(timerElement);
+        }
+        const countdownOverlay = document.getElementById('countdown-overlay');
+        countdownOverlay.style.display = 'none';
+
+        if (treeStates[index] && treeStates[index].planted && !treeStates[index].dead) {
+            totalBlinkersToday--;
+            if (totalBlinkersToday < highScore) {
+                highScore = totalBlinkersToday;
+            }
+            chrome.storage.local.set({ totalBlinkersToday: totalBlinkersToday, highScore: highScore }, () => {
+                console.log('Blinker canceled!');
+            });
+            updateBlinkStats();
+        }
+    }
+
     const resetButton = document.getElementById('reset-button');
     resetButton.addEventListener('click', () => {
         treeStates = {};
@@ -166,6 +196,20 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Trees reset!');
         });
         updatePlots();
+    });
+
+    const blinkCountElement = document.getElementById('blink-count');
+    blinkCountElement.addEventListener('click', () => {
+        if (totalBlinkersToday > 0) {
+            totalBlinkersToday--;
+            if (totalBlinkersToday < highScore) {
+                highScore = totalBlinkersToday;
+            }
+            chrome.storage.local.set({ totalBlinkersToday: totalBlinkersToday, highScore: highScore }, () => {
+                console.log('Daily blink count reduced!');
+            });
+            updateBlinkStats();
+        }
     });
 
     function resetDailyCountAtMidnight() {
