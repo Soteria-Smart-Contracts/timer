@@ -135,7 +135,7 @@ function startBlinkerAnimation(plot) {
 
 // Check if all trees are filled and display gnome image
 function checkAllTreesFilled() {
-    if (plantedTreesCount === 6) {
+    if (plantedTreesCount === plots.length) {
         displayGnome();
     }
 }
