@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function startCountdown(plot, index) {
       const countdownOverlay = document.getElementById('countdown-overlay');
       const countdownText = document.getElementById('countdown-text');
-      let countdownValues = ['3', '2', '1', 'Ready', 'Start', 'Go'];
+      let countdownValues = ['Ready', 'Set', 'Go'];
       let countdownIndex = 0;
   
       countdownOverlay.style.display = 'flex';
