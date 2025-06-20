@@ -89,11 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetButton = document.getElementById('reset-button');
     resetButton.addEventListener('click', () => {
       treeStates = {};
-      totalBlinkers = 0;
-      chrome.storage.local.set({ treeStates: treeStates, totalBlinkers: totalBlinkers }, () => {
-        console.log('Reset complete!');
+      chrome.storage.local.set({ treeStates: treeStates }, () => {
+        console.log('Trees reset!');
       });
       updatePlots();
-      updateTotalBlinkers();
     });
   });
