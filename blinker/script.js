@@ -175,6 +175,9 @@ document.addEventListener('DOMContentLoaded', () => {
               "You're a true Blinker Champion! 🏆",
               "Blinking brilliance! Keep it going! 💫",
               "You're a Blinker Legend! 🌈",
+                "Blinking your way to greatness! 🚀",
+                "Blinker power! You're unstoppable! 💪",
+                "Blinking for a brighter tomorrow! 🌞",
         ];
         return messages[Math.floor(Math.random() * messages.length)];
     }
