@@ -2,13 +2,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const plots = document.querySelectorAll('.plot');
     let timers = {};
     let treeStates = {};
+    let totalBlinkers = 0;
   
     // Load saved states from storage
-    chrome.storage.local.get(['treeStates'], (result) => {
+    chrome.storage.local.get(['treeStates', 'totalBlinkers'], (result) => {
       if (result.treeStates) {
         treeStates = result.treeStates;
-        updatePlots();
       }
+      if (result.totalBlinkers !== undefined) {
+        totalBlinkers = result.totalBlinkers;
+      }
+      updatePlots();
+      updateTotalBlinkers();
     });
   
     function updatePlots() {
@@ -31,6 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
       });
+    }
+  
+    function updateTotalBlinkers() {
+      document.getElementById('blink-count').textContent = totalBlinkers;
     }
   
     plots.forEach((plot, index) => {
@@ -59,10 +68,12 @@ document.addEventListener('DOMContentLoaded', () => {
           clearInterval(interval);
           plot.classList.add('active');
           treeStates[index] = { planted: true, dead: false };
-          chrome.storage.local.set({ treeStates: treeStates }, () => {
+          totalBlinkers++;
+          chrome.storage.local.set({ treeStates: treeStates, totalBlinkers: totalBlinkers }, () => {
             console.log('Tree planted!');
           });
           timerElement.textContent = 'Planted!';
+          updateTotalBlinkers();
           setTimeout(() => {
             treeStates[index].dead = true;
             chrome.storage.local.set({ treeStates: treeStates }, () => {
