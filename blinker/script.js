@@ -1,111 +1,84 @@
 document.addEventListener('DOMContentLoaded', () => {
     const plots = document.querySelectorAll('.plot');
-    let timers = {};
     let treeStates = {};
     let totalBlinkersToday = 0;
     let highScore = 0;
-    let isBlinking = false; // Flag to ensure only one blinker at a time
-    let activePlotIndex = null; // Track the currently active plot index
+    let isBlinking = false;
+    let activePlotIndex = null;
 
     // Load saved states from storage
-    chrome.storage.local.get(['treeStates', 'totalBlinkersToday', 'highScore'], (result) => {
-        if (result.treeStates) {
-            treeStates = result.treeStates;
-        }
-        if (result.totalBlinkersToday !== undefined) {
-            totalBlinkersToday = result.totalBlinkersToday;
-        }
-        if (result.highScore !== undefined) {
-            highScore = result.highScore;
-        }
+    chrome.storage.local.get(['treeStates', 'totalBlinkersToday', 'highScore'], initExtension);
+
+    function initExtension({ treeStates: ts, totalBlinkersToday: tb, highScore: hs }) {
+        treeStates = ts || {};
+        totalBlinkersToday = tb || 0;
+        highScore = hs || 0;
         updatePlots();
         updateBlinkStats();
         resetDailyCountAtMidnight();
-    });
+    }
 
+    // Update the plots to reflect the current state of trees
     function updatePlots() {
         plots.forEach((plot, index) => {
             const state = treeStates[index];
             if (state && state.planted && !state.dead) {
                 plot.classList.add('active');
-                const timerElement = plot.querySelector('.timer');
-                if (!timerElement) {
-                    const newTimer = document.createElement('div');
-                    newTimer.className = 'timer';
-                    plot.appendChild(newTimer);
-                }
-                plot.querySelector('.timer').textContent = 'Planted!';
-                plot.querySelector('.timer').style.fontSize = '16px'; // Set consistent font size
-                plot.querySelector('.timer').classList.remove('countdown'); // Remove countdown class
+                plot.innerHTML = '<div class="timer">Planted!</div>';
             } else {
                 plot.classList.remove('active');
-                const timerElement = plot.querySelector('.timer');
-                if (timerElement) {
-                    plot.removeChild(timerElement);
-                }
+                plot.innerHTML = '';
             }
         });
     }
 
+    // Update the blink stats display
     function updateBlinkStats() {
         document.getElementById('blink-count').textContent = totalBlinkersToday;
         document.getElementById('high-score').textContent = highScore;
     }
 
-    plots.forEach((plot, index) => {
-        plot.addEventListener('click', () => {
-            if (isBlinking && activePlotIndex === index) {
-                // Cancel the current blinker
-                cancelBlinker(index);
-            } else if (!isBlinking && (!treeStates[index] || treeStates[index].dead)) {
-                isBlinking = true;
-                activePlotIndex = index;
-                startCountdown(plot, index);
-            }
-        });
-    });
-
+    // Start the countdown overlay
     function startCountdown(plot, index) {
-        const countdownOverlay = document.getElementById('countdown-overlay');
-        const countdownText = document.getElementById('countdown-text');
-        let countdownValues = ['Ready', 'Set', 'Go'];
-        let countdownIndex = 0;
+        const overlay = document.getElementById('countdown-overlay');
+        const text = document.getElementById('countdown-text');
+        let values = ['Ready', 'Set', 'Go'];
+        let i = 0;
 
-        countdownOverlay.style.display = 'flex';
-        countdownText.textContent = '';
+        overlay.style.display = 'flex';
+        text.textContent = '';
 
-        const countdownInterval = setInterval(() => {
-            if (countdownIndex < countdownValues.length) {
-                countdownText.textContent = countdownValues[countdownIndex];
-                countdownIndex++;
+        const interval = setInterval(() => {
+            if (i < values.length) {
+                text.textContent = values[i++];
             } else {
-                clearInterval(countdownInterval);
-                countdownOverlay.style.display = 'none';
+                clearInterval(interval);
+                overlay.style.display = 'none';
                 startTimer(plot, index);
             }
         }, 1000);
     }
 
+    // Start the timer for planting a tree
     function startTimer(plot, index) {
         let startTime = Date.now();
         let interval = setInterval(() => {
             let elapsed = (Date.now() - startTime) / 1000;
             let timerElement = plot.querySelector('.timer');
             if (!timerElement) {
-                const newTimer = document.createElement('div');
-                newTimer.className = 'timer countdown'; // Add countdown class
-                plot.appendChild(newTimer);
+                timerElement = document.createElement('div');
+                timerElement.className = 'timer countdown';
+                plot.appendChild(timerElement);
             }
             let remainingTime = 8 - Math.floor(elapsed);
 
             if (remainingTime <= 2) {
-                // Blink red and white in the last 2 seconds
                 timerElement.style.color = (Math.floor(elapsed) % 2 === 0) ? 'red' : 'white';
             } else {
                 timerElement.style.color = 'white';
             }
 
-            timerElement.style.fontSize = `${24 + (elapsed * 4)}px`; // Growing font size during timer
+            timerElement.style.fontSize = `${24 + (elapsed * 4)}px`;
             timerElement.textContent = `${remainingTime}s`;
 
             if (elapsed >= 8) {
@@ -116,102 +89,69 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (totalBlinkersToday > highScore) {
                     highScore = totalBlinkersToday;
                 }
-                chrome.storage.local.set({ treeStates: treeStates, totalBlinkersToday: totalBlinkersToday, highScore: highScore }, () => {
+                chrome.storage.local.set({ treeStates, totalBlinkersToday, highScore }, () => {
                     console.log('Tree planted!');
                 });
                 timerElement.textContent = 'Planted!';
-                timerElement.style.fontSize = '16px'; // Set consistent font size
-                timerElement.classList.remove('countdown'); // Remove countdown class
+                timerElement.style.fontSize = '16px';
                 startBlinkerAnimation(plot);
             }
         }, 100);
     }
 
+    // Start the blinker animation
     function startBlinkerAnimation(plot) {
-        const countdownOverlay = document.getElementById('countdown-overlay');
-        const countdownText = document.getElementById('countdown-text');
-        countdownOverlay.style.display = 'flex';
-        countdownText.textContent = 'BLINKER';
+        const overlay = document.getElementById('countdown-overlay');
+        const text = document.getElementById('countdown-text');
+        overlay.style.display = 'flex';
+        text.textContent = 'BLINKER';
 
-        let flashCount = 0;
-        const flashInterval = setInterval(() => {
-            if (flashCount < 10) { // Flash 10 times
-                if (flashCount % 2 === 0) {
-                    countdownOverlay.style.backgroundColor = 'black';
-                    countdownText.style.color = 'white';
-                } else {
-                    countdownOverlay.style.backgroundColor = 'white';
-                    countdownText.style.color = 'black';
-                }
-                flashCount++;
+        let i = 0;
+        const interval = setInterval(() => {
+            if (i < 10) {
+                overlay.style.backgroundColor = (i % 2 === 0) ? 'black' : 'white';
+                text.style.color = (i % 2 === 0) ? 'white' : 'black';
+                i++;
             } else {
-                clearInterval(flashInterval);
-                countdownOverlay.style.display = 'none';
-                isBlinking = false; // Allow another blink
-                activePlotIndex = null; // Reset active plot index
+                clearInterval(interval);
+                overlay.style.display = 'none';
+                isBlinking = false;
+                activePlotIndex = null;
                 updateBlinkStats();
                 setTimeout(() => {
-                    treeStates[index].dead = true;
-                    chrome.storage.local.set({ treeStates: treeStates }, () => {
+                    treeStates[activePlotIndex].dead = true;
+                    chrome.storage.local.set({ treeStates }, () => {
                         console.log('Tree died!');
                     });
                     plot.classList.remove('active');
-                    const timerElement = plot.querySelector('.timer');
-                    if (timerElement) {
-                        plot.removeChild(timerElement);
-                    }
-                }, 7200000); // 2 hours
+                    plot.innerHTML = '';
+                }, 7200000);
             }
-        }, 200); // Flash every 200ms
+        }, 200);
     }
 
+    // Cancel the current blinker
     function cancelBlinker(index) {
-        isBlinking = false; // Allow another blink
-        activePlotIndex = null; // Reset active plot index
+        isBlinking = false;
+        activePlotIndex = null;
         const plot = plots[index];
         plot.classList.remove('active');
-        const timerElement = plot.querySelector('.timer');
-        if (timerElement) {
-            plot.removeChild(timerElement);
-        }
-        const countdownOverlay = document.getElementById('countdown-overlay');
-        countdownOverlay.style.display = 'none';
+        plot.innerHTML = '';
+        document.getElementById('countdown-overlay').style.display = 'none';
 
         if (treeStates[index] && treeStates[index].planted && !treeStates[index].dead) {
             totalBlinkersToday--;
             if (totalBlinkersToday < highScore) {
                 highScore = totalBlinkersToday;
             }
-            chrome.storage.local.set({ totalBlinkersToday: totalBlinkersToday, highScore: highScore }, () => {
+            chrome.storage.local.set({ totalBlinkersToday, highScore }, () => {
                 console.log('Blinker canceled!');
             });
             updateBlinkStats();
         }
     }
 
-    const resetButton = document.getElementById('reset-button');
-    resetButton.addEventListener('click', () => {
-        treeStates = {};
-        chrome.storage.local.set({ treeStates: treeStates }, () => {
-            console.log('Trees reset!');
-        });
-        updatePlots();
-    });
-
-    const blinkCountElement = document.getElementById('blink-count');
-    blinkCountElement.addEventListener('click', () => {
-        if (totalBlinkersToday > 0) {
-            totalBlinkersToday--;
-            if (totalBlinkersToday < highScore) {
-                highScore = totalBlinkersToday;
-            }
-            chrome.storage.local.set({ totalBlinkersToday: totalBlinkersToday, highScore: highScore }, () => {
-                console.log('Daily blink count reduced!');
-            });
-            updateBlinkStats();
-        }
-    });
-
+    // Reset daily blink count at midnight
     function resetDailyCountAtMidnight() {
         const now = new Date();
         const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
@@ -219,11 +159,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             totalBlinkersToday = 0;
-            chrome.storage.local.set({ totalBlinkersToday: totalBlinkersToday }, () => {
+            chrome.storage.local.set({ totalBlinkersToday }, () => {
                 console.log('Daily blink count reset at midnight!');
             });
             updateBlinkStats();
-            resetDailyCountAtMidnight(); // Schedule the next reset
+            resetDailyCountAtMidnight();
         }, timeUntilMidnight);
     }
+
+    // Event listeners for plots
+    plots.forEach((plot, index) => {
+        plot.addEventListener('click', () => {
+            if (isBlinking && activePlotIndex === index) {
+                cancelBlinker(index);
+            } else if (!isBlinking && (!treeStates[index] || treeStates[index].dead)) {
+                isBlinking = true;
+                activePlotIndex = index;
+                startCountdown(plot, index);
+            }
+        });
+    });
+
+    // Event listener for reset button
+    document.getElementById('reset-button').addEventListener('click', () => {
+        treeStates = {};
+        chrome.storage.local.set({ treeStates }, () => {
+            console.log('Trees reset!');
+        });
+        updatePlots();
+    });
+
+    // Event listener for reducing daily blinker count
+    document.getElementById('blink-count').addEventListener('click', () => {
+        if (totalBlinkersToday > 0) {
+            totalBlinkersToday--;
+            if (totalBlinkersToday < highScore) {
+                highScore = totalBlinkersToday;
+            }
+            chrome.storage.local.set({ totalBlinkersToday, highScore }, () => {
+                console.log('Daily blink count reduced!');
+            });
+            updateBlinkStats();
+        }
+    });
 });
