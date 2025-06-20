@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
           timerElement.style.fontSize = '16px'; // Set consistent font size
           timerElement.classList.remove('countdown'); // Remove countdown class
           updateTotalBlinkers();
+          isBlinking = false; // Allow another blink
           setTimeout(() => {
             treeStates[index].dead = true;
             chrome.storage.local.set({ treeStates: treeStates }, () => {
@@ -87,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             plot.classList.remove('active');
             plot.removeChild(timerElement);
-            isBlinking = false; // Allow another blink
           }, 120000); // 2 min
         }
       }, 100);
