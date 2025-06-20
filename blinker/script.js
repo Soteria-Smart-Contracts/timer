@@ -124,6 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 7200000);
             }
         }, 200);
+
+        overlay.st
     }
 
     // Reset daily blink count at midnight
