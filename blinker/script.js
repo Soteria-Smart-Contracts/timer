@@ -3,22 +3,18 @@ document.addEventListener('DOMContentLoaded', () => {
     let timers = {};
     let treeStates = {};
     let totalBlinkers = 0;
-    let pruneTime = 10; // Default prune time in minutes
+    let isBlinking = false; // Flag to ensure only one blinker at a time
   
     // Load saved states from storage
-    chrome.storage.local.get(['treeStates', 'totalBlinkers', 'pruneTime'], (result) => {
+    chrome.storage.local.get(['treeStates', 'totalBlinkers'], (result) => {
       if (result.treeStates) {
         treeStates = result.treeStates;
       }
       if (result.totalBlinkers !== undefined) {
         totalBlinkers = result.totalBlinkers;
       }
-      if (result.pruneTime !== undefined) {
-        pruneTime = result.pruneTime;
-      }
       updatePlots();
       updateTotalBlinkers();
-      startPruneInterval();
     });
   
     function updatePlots() {
@@ -51,7 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
     plots.forEach((plot, index) => {
       plot.addEventListener('click', () => {
-        if (!treeStates[index] || treeStates[index].dead) {
+        if (!isBlinking && (!treeStates[index] || treeStates[index].dead)) {
+          isBlinking = true;
           startTimer(plot, index);
         }
       });
@@ -74,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (elapsed >= 8) {
           clearInterval(interval);
           plot.classList.add('active');
-          treeStates[index] = { planted: true, dead: false, plantedTime: Date.now() };
+          treeStates[index] = { planted: true, dead: false };
           totalBlinkers++;
           chrome.storage.local.set({ treeStates: treeStates, totalBlinkers: totalBlinkers }, () => {
             console.log('Tree planted!');
@@ -83,58 +80,17 @@ document.addEventListener('DOMContentLoaded', () => {
           timerElement.style.fontSize = '16px'; // Set consistent font size
           timerElement.classList.remove('countdown'); // Remove countdown class
           updateTotalBlinkers();
-          startPruneTimer(index);
+          setTimeout(() => {
+            treeStates[index].dead = true;
+            chrome.storage.local.set({ treeStates: treeStates }, () => {
+              console.log('Tree died!');
+            });
+            plot.classList.remove('active');
+            plot.removeChild(timerElement);
+            isBlinking = false; // Allow another blink
+          }, 7200000); // 2 hours
         }
       }, 100);
-    }
-  
-    function startPruneInterval() {
-      setInterval(() => {
-        plots.forEach((plot, index) => {
-          const state = treeStates[index];
-          if (state && state.planted && !state.dead) {
-            const timeSincePlanted = (Date.now() - state.plantedTime) / 60000; // Convert to minutes
-            if (timeSincePlanted >= 90) { // Hardcoded to die after 1.5 hours
-              treeStates[index].dead = true;
-              chrome.storage.local.set({ treeStates: treeStates }, () => {
-                console.log('Tree died after 1.5 hours!');
-              });
-              plot.classList.remove('active');
-              const timerElement = plot.querySelector('.timer');
-              if (timerElement) {
-                plot.removeChild(timerElement);
-              }
-            } else if (Math.random() < 0.5 && timeSincePlanted >= pruneTime / 2) { // 50% chance to decay every 30 minutes
-              treeStates[index].dead = true;
-              chrome.storage.local.set({ treeStates: treeStates }, () => {
-                console.log('Tree pruned!');
-              });
-              plot.classList.remove('active');
-              const timerElement = plot.querySelector('.timer');
-              if (timerElement) {
-                plot.removeChild(timerElement);
-              }
-            }
-          }
-        });
-      }, 60000); // Check every minute
-    }
-  
-    function startPruneTimer(index) {
-      setTimeout(() => {
-        const state = treeStates[index];
-        if (state && state.planted && !state.dead) {
-          treeStates[index].dead = true;
-          chrome.storage.local.set({ treeStates: treeStates }, () => {
-            console.log('Tree died after 1.5 hours!');
-          });
-          plots[index].classList.remove('active');
-          const timerElement = plots[index].querySelector('.timer');
-          if (timerElement) {
-            plots[index].removeChild(timerElement);
-          }
-        }
-      }, 90 * 60000); // 1.5 hours
     }
   
     const resetButton = document.getElementById('reset-button');
@@ -144,26 +100,5 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Trees reset!');
       });
       updatePlots();
-    });
-  
-    const settingsIcon = document.getElementById('settings-icon');
-    const settingsModal = document.getElementById('settings-modal');
-    const saveSettingsButton = document.getElementById('save-settings');
-  
-    settingsIcon.addEventListener('click', () => {
-      settingsModal.style.display = 'flex';
-    });
-  
-    saveSettingsButton.addEventListener('click', () => {
-      const newPruneTime = parseInt(document.getElementById('prune-time').value, 10);
-      if (newPruneTime >= 1 && newPruneTime <= 60) {
-        pruneTime = newPruneTime;
-        chrome.storage.local.set({ pruneTime: pruneTime }, () => {
-          console.log(`Prune time set to ${pruneTime} minutes`);
-        });
-        settingsModal.style.display = 'none';
-      } else {
-        alert('Please enter a valid prune time between 1 and 60 minutes.');
-      }
     });
   });
