@@ -262,7 +262,8 @@ function displayGnome() {
     message.textContent = getRandomGnomeMessage();
     message.style.color = 'white';
     message.style.textAlign = 'center';
-    message.style.fontSize = '18px';
+    message.style.fontSize = '24px';
+    message.style.fontWeight = 'bold';
 
     overlay.innerHTML = '';
     overlay.appendChild(img);
