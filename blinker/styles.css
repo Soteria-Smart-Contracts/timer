@@ -12,7 +12,6 @@ body {
   
   #game-container {
     width: 100%;
-    perspective: 1000px;
     margin-bottom: 20px; /* Add space for extra details */
     border: 1px solid #00cc00;
     padding: 10px;
@@ -24,8 +23,6 @@ body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
-    transform-style: preserve-3d;
-    transform: rotateX(-20deg); /* Adjusted rotation */
   }
   
   .plot {
@@ -44,63 +41,6 @@ body {
     transform: scale(1.1);
   }
   
-  .plot .tree {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform-style: preserve-3d;
-  }
-  
-  .plot .tree .trunk {
-    width: 10px;
-    height: 50px; /* Made taller */
-    background: linear-gradient(to bottom, #8b4513, #654321);
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  
-  .plot .tree .branches {
-    width: 0;
-    height: 0;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-bottom: 30px solid #228b22;
-    position: absolute;
-    bottom: 50px; /* Adjusted position */
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  
-  .plot .tree .branches::before {
-    content: '';
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 20px solid #228b22;
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  
-  .plot .tree .branches::after {
-    content: '';
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-bottom: 10px solid #228b22;
-    position: absolute;
-    top: -40px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  
   .plot .timer {
     font-size: 16px;
     color: white;
@@ -115,6 +55,11 @@ body {
     background-color: green;
     padding: 5px;
     border-radius: 5px;
+  }
+  
+  .plot.active {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 120"><rect x="25" y="90" width="10" height="30" fill="saddlebrown"/><polygon points="10,60 50,60 30,30" fill="forestgreen"/><polygon points="15,40 45,40 30,10" fill="forestgreen"/><polygon points="20,20 40,20 30,0" fill="forestgreen"/></svg>');
+    background-size: cover;
   }
   
   #reset-button {
