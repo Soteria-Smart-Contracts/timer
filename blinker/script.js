@@ -125,7 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 200);
 
-        overlay.style.back
+        overlay.style.backgroundColor = 'black';
+        text.style.color = 'white';
     }
 
     // Reset daily blink count at midnight
