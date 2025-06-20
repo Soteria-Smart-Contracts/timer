@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           plot.querySelector('.timer').textContent = 'Planted!';
           plot.querySelector('.timer').style.fontSize = '16px'; // Set consistent font size
+          plot.querySelector('.timer').classList.remove('countdown'); // Remove countdown class
         } else {
           plot.classList.remove('active');
           const timerElement = plot.querySelector('.timer');
@@ -58,10 +59,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let timerElement = plot.querySelector('.timer');
         if (!timerElement) {
           timerElement = document.createElement('div');
-          timerElement.className = 'timer';
+          timerElement.className = 'timer countdown'; // Add countdown class
           plot.appendChild(timerElement);
         }
-        timerElement.style.fontSize = `${16 + (elapsed * 2)}px`; // Growing font size during timer
+        timerElement.style.fontSize = `${24 + (elapsed * 2)}px`; // Growing font size during timer
         timerElement.style.color = `rgba(255, ${255 - (elapsed * 32)}, 0, 1)`;
         timerElement.textContent = `${8 - Math.floor(elapsed)}s`;
   
@@ -75,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
           });
           timerElement.textContent = 'Planted!';
           timerElement.style.fontSize = '16px'; // Set consistent font size
+          timerElement.classList.remove('countdown'); // Remove countdown class
           updateTotalBlinkers();
           setTimeout(() => {
             treeStates[index].dead = true;
