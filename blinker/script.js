@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let totalBlinkersToday = 0;
     let highScore = 0;
     let isBlinking = false;
-    let plantedTreesCount = 0;
 
     // Load saved states from storage
     chrome.storage.local.get(['treeStates', 'totalBlinkersToday', 'highScore'], ({ treeStates: ts, totalBlinkersToday: tb, highScore: hs }) => {
@@ -23,13 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (state && state.planted && !state.dead) {
                 plot.classList.add('active');
                 plot.innerHTML = '<div class="timer">Planted!</div>';
-                plantedTreesCount++;
             } else {
                 plot.classList.remove('active');
                 plot.innerHTML = '';
             }
         });
-        updateBlinkStats();
     }
 
     // Update the blink stats display
@@ -127,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     plot.classList.remove('active');
                     plot.innerHTML = '';
-                    plantedTreesCount--; // Decrement the planted trees count
                 }, 7200000);
             }
         }, 200);
@@ -135,7 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Check if all trees are filled and display gnome image
     function checkAllTreesFilled() {
-        if (plantedTreesCount === 6) {
+        const allPlanted = Object.values(treeStates).every(state => state.planted && !state.dead);
+        if (allPlanted) {
             displayGnome();
         }
     }
@@ -145,10 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const overlay = document.getElementById('countdown-overlay');
         const text = document.getElementById('countdown-text');
         overlay.style.display = 'flex';
-        overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-        overlay.style.justifyContent = 'center';
-        overlay.style.alignItems = 'center';
-        overlay.style.flexDirection = 'column';
+        text.style.color = 'white';
+        text.style.textAlign = 'center';
+        text.style.marginTop = '20px';
+        text.style.fontSize = '24px';
 
         const img = document.createElement('img');
         img.src = 'gnome.jpg';
@@ -168,23 +165,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             overlay.style.display = 'none';
-            overlay.innerHTML = ''; // Clear the overlay content
         }, 5000); // Display for 5 seconds
     }
 
     // Get a random gnome message
     function getRandomGnomeMessage() {
         const messages = [
-"Keep it up, Blinker Buddy! :star2:",
-              "You're a true Blinker Champion! :trophy:",
-              "Blinking brilliance! Keep it going! :dizzy:",
-              "You're a Blinker Legend! :rainbow:",
-                "Blinking your way to greatness! :rocket:",
-                "Blinker power! You're unstoppable! :muscle:",
-                "Blinking for a brighter tomorrow! :sun_with_face:",
-                "Your blinking skills are unmatched! :first_place:",
-                "Blinking with style and grace! :tophat:",
-                "You're the Blinker Master! :crown:",
+           "Keep it up, Blinker Buddy! 🌟",
+              "You're a true Blinker Champion! 🏆",
+              "Blinking brilliance! Keep it going! 💫",
+              "You're a Blinker Legend! 🌈",
+                "Blinking your way to greatness! 🚀",
+                "Blinker power! You're unstoppable! 💪",
+                "Blinking for a brighter tomorrow! 🌞",
+                "Your blinking skills are unmatched! 🥇",
+                "Blinking with style and grace! 🎩",
+                "You're the Blinker Master! 👑",
         ];
         return messages[Math.floor(Math.random() * messages.length)];
     }
@@ -198,13 +194,10 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             totalBlinkersToday = 0;
             highScore = 0; // Reset high score if today's count was the highest
-            plantedTreesCount = 0; // Reset planted trees count
-            treeStates = {};
             chrome.storage.local.set({ treeStates, totalBlinkersToday, highScore }, () => {
                 console.log('Daily blink count reset at midnight!');
             });
             updateBlinkStats();
-            updatePlots();
             resetDailyCountAtMidnight();
         }, timeUntilMidnight);
     }
