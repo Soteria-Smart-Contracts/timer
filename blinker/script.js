@@ -178,6 +178,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 "Blinking your way to greatness! 🚀",
                 "Blinker power! You're unstoppable! 💪",
                 "Blinking for a brighter tomorrow! 🌞",
+                "Your blinking skills are unmatched! 🥇",
+                "Blinking with style and grace! 🎩",
+                "You're the Blinker Master! 👑",
         ];
         return messages[Math.floor(Math.random() * messages.length)];
     }
