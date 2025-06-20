@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             plot.appendChild(newTimer);
           }
           plot.querySelector('.timer').textContent = 'Planted!';
+          plot.querySelector('.timer').style.fontSize = '16px'; // Set consistent font size
         } else {
           plot.classList.remove('active');
           const timerElement = plot.querySelector('.timer');
@@ -60,38 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
           timerElement.className = 'timer';
           plot.appendChild(timerElement);
         }
-        timerElement.style.fontSize = `${16 + (elapsed * 2)}px`;
+        timerElement.style.fontSize = `${16 + (elapsed * 2)}px`; // Growing font size during timer
         timerElement.style.color = `rgba(255, ${255 - (elapsed * 32)}, 0, 1)`;
         timerElement.textContent = `${8 - Math.floor(elapsed)}s`;
-  
-        if (elapsed >= 8) {
-          clearInterval(interval);
-          plot.classList.add('active');
-          treeStates[index] = { planted: true, dead: false };
-          totalBlinkers++;
-          chrome.storage.local.set({ treeStates: treeStates, totalBlinkers: totalBlinkers }, () => {
-            console.log('Tree planted!');
-          });
-          timerElement.textContent = 'Planted!';
-          updateTotalBlinkers();
-          setTimeout(() => {
-            treeStates[index].dead = true;
-            chrome.storage.local.set({ treeStates: treeStates }, () => {
-              console.log('Tree died!');
-            });
-            plot.classList.remove('active');
-            plot.removeChild(timerElement);
-          }, 7200000); // 2 hours
-        }
-      }, 100);
-    }
-  
-    const resetButton = document.getElementById('reset-button');
-    resetButton.addEventListener('click', () => {
-      treeStates = {};
-      chrome.storage.local.set({ treeStates: treeStates }, () => {
-        console.log('Trees reset!');
-      });
-      updatePlots();
-    });
-  });

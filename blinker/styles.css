@@ -46,7 +46,7 @@ body {
   }
   
   .plot .timer {
-    font-size: 16px;
+    font-size: 16px; /* Consistent font size */
     color: white;
     position: absolute;
     top: 50%;
