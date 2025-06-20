@@ -108,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
           timerElement.textContent = 'Planted!';
           timerElement.style.fontSize = '16px'; // Set consistent font size
           timerElement.classList.remove('countdown'); // Remove countdown class
+          isBlinking = false; // Allow another blink
           updateBlinkStats();
           setTimeout(() => {
             treeStates[index].dead = true;
@@ -116,7 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             plot.classList.remove('active');
             plot.removeChild(timerElement);
-            isBlinking = false; // Allow another blink
           }, 7200000); // 2 hours
         }
       }, 100);
