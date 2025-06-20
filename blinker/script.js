@@ -110,16 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (i < 10) {
                 overlay.style.backgroundColor = (i % 2 === 0) ? 'black' : 'white';
                 text.style.color = (i % 2 === 0) ? 'white' : 'black';
-
-        overlay.style.opacity = '1';
-
-
                 i++;
             } else {
                 clearInterval(interval);
                 overlay.style.display = 'none';
                 isBlinking = false;
                 updateBlinkStats();
+                checkAllTreesFilled();
                 setTimeout(() => {
                     treeStates[index].dead = true;
                     chrome.storage.local.set({ treeStates }, () => {
@@ -132,6 +129,62 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 200);
     }
 
+    // Check if all trees are filled and display gnome image
+    function checkAllTreesFilled() {
+        const allPlanted = Object.values(treeStates).every(state => state.planted && !state.dead);
+        if (allPlanted) {
+            displayGnome();
+        }
+    }
+
+    // Display gnome image with a unique message
+    function displayGnome() {
+        const overlay = document.getElementById('countdown-overlay');
+        const text = document.getElementById('countdown-text');
+        overlay.style.display = 'flex';
+        text.style.color = 'white';
+        text.style.textAlign = 'center';
+        text.style.marginTop = '20px';
+        text.style.fontSize = '24px';
+
+        const img = document.createElement('img');
+        img.src = 'gnome.jpg';
+        img.style.width = '100px';
+        img.style.height = 'auto';
+        img.style.margin = '0 auto 10px';
+
+        const message = document.createElement('div');
+        message.textContent = getRandomGnomeMessage();
+        message.style.color = 'white';
+        message.style.textAlign = 'center';
+        message.style.fontSize = '18px';
+
+        overlay.innerHTML = '';
+        overlay.appendChild(img);
+        overlay.appendChild(message);
+
+        setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 5000); // Display for 5 seconds
+    }
+
+    // Get a random gnome message
+    function getRandomGnomeMessage() {
+        const messages = [
+            "Gnome says: 'Nice job!'",
+            "Gnome says: 'Keep it going!'",
+            "Gnome says: 'Well done!'",
+            "Gnome says: 'Great work!'",
+            "Gnome says: 'Awesome!'",
+            "Gnome says: 'Impressive!'",
+            "Gnome says: 'Excellent!'",
+            "Gnome says: 'Brilliant!'",
+            "Gnome says: 'Fantastic!'",
+            "Gnome says: 'Super!'"
+        ];
+        return messages[Math.floor(Math.random() * messages.length)];
+    }
+
     // Reset daily blink count at midnight
     function resetDailyCountAtMidnight() {
         const now = new Date();
@@ -141,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             totalBlinkersToday = 0;
             highScore = 0; // Reset high score if today's count was the highest
-            chrome.storage.local.set({ totalBlinkersToday, highScore }, () => {
+            chrome.storage.local.set({ treeStates, totalBlinkersToday, highScore }, () => {
                 console.log('Daily blink count reset at midnight!');
             });
             updateBlinkStats();
