@@ -175,16 +175,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Get a random gnome message
     function getRandomGnomeMessage() {
         const messages = [
-            "Gnome says: 'Nice job!'",
-            "Gnome says: 'Keep it going!'",
-            "Gnome says: 'Well done!'",
-            "Gnome says: 'Great work!'",
-            "Gnome says: 'Awesome!'",
-            "Gnome says: 'Impressive!'",
-            "Gnome says: 'Excellent!'",
-            "Gnome says: 'Brilliant!'",
-            "Gnome says: 'Fantastic!'",
-            "Gnome says: 'Super!'"
+"Keep it up, Blinker Buddy! :star2:",
+              "You're a true Blinker Champion! :trophy:",
+              "Blinking brilliance! Keep it going! :dizzy:",
+              "You're a Blinker Legend! :rainbow:",
+                "Blinking your way to greatness! :rocket:",
+                "Blinker power! You're unstoppable! :muscle:",
+                "Blinking for a brighter tomorrow! :sun_with_face:",
+                "Your blinking skills are unmatched! :first_place:",
+                "Blinking with style and grace! :tophat:",
+                "You're the Blinker Master! :crown:",
         ];
         return messages[Math.floor(Math.random() * messages.length)];
     }
