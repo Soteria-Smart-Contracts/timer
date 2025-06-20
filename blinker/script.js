@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 200);
 
-        overlay.style.backgroundColor - 'black';
+        overlay.style.backgroundColor = 'black';
         text.style.color = 'white';
 
     }
