@@ -171,7 +171,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Get a random gnome message
     function getRandomGnomeMessage() {
         const messages = [
-           Keep it up, Blinker Buddy! 🌟",
+           "Keep it up, Blinker Buddy! 🌟",
+              "You're a true Blinker Champion! 🏆",
+              "Blinking brilliance! Keep it going! 💫",
+              "You're a Blinker Legend! 🌈",
         ];
         return messages[Math.floor(Math.random() * messages.length)];
     }
