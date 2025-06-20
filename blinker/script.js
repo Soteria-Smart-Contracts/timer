@@ -171,16 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Get a random gnome message
     function getRandomGnomeMessage() {
         const messages = [
-            "Gnome says: 'Nice job!'",
-            "Gnome says: 'Keep it going!'",
-            "Gnome says: 'Well done!'",
-            "Gnome says: 'Great work!'",
-            "Gnome says: 'Awesome!'",
-            "Gnome says: 'Impressive!'",
-            "Gnome says: 'Excellent!'",
-            "Gnome says: 'Brilliant!'",
-            "Gnome says: 'Fantastic!'",
-            "Gnome says: 'Super!'"
+           Keep it up, Blinker Buddy! 🌟",
         ];
         return messages[Math.floor(Math.random() * messages.length)];
     }
