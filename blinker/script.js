@@ -108,6 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (i < 10) {
                 overlay.style.backgroundColor = (i % 2 === 0) ? 'black' : 'white';
                 text.style.color = (i % 2 === 0) ? 'white' : 'black';
+
+        overlay.style.backgroundColor = 'black';
+        overlay.style.opacity = '1';
+        text.style.color = 'white';
+
                 i++;
             } else {
                 clearInterval(interval);
