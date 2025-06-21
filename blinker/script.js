@@ -1,5 +1,5 @@
 const plots = document.querySelectorAll('.plot');
-let treeStates = []; // Changed to an array
+let treeStates = [];
 let totalBlinkersToday = 0;
 let highScore = 0;
 let isBlinking = false;
@@ -120,9 +120,9 @@ function startBlinkerAnimation(plot) {
             updateBlinkStats();
             checkAllTreesFilled();
             setTimeout(() => {
-                const treeIndex = treeStates.indexOf(index);
-                if (treeIndex !== -1) {
-                    treeStates.splice(treeIndex, 1);
+                const index = treeStates.indexOf(index);
+                if (index !== -1) {
+                    treeStates.splice(index, 1);
                 }
                 chrome.storage.local.set({ treeStates }, () => {
                     console.log('Tree died!');
