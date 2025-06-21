@@ -18,17 +18,7 @@ chrome.storage.local.get(['treeStates', 'totalBlinkersToday', 'highScore'], ({ t
 // Update the plots to reflect the current state of trees
 function updatePlots() {
     plantedTreesCount = 0; // Reset plantedTreesCount
-    plots.forEach((plot, index) => {
-        const state = treeStates[index];
-        if (state && state.planted && !state.dead) {
-            plot.classList.add('active');
-            plot.innerHTML = '<div class="timer">Planted!</div>';
-            plantedTreesCount++;
-        } else {
-            plot.classList.remove('active');
-            plot.innerHTML = '';
-        }
-    });
+    treeStates
     updateBlinkStats();
 }
 
