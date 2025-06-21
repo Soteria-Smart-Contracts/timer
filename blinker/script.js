@@ -12,7 +12,7 @@ chrome.storage.local.get(['treeStates', 'totalBlinkersToday', 'highScore'], ({ t
     highScore = hs || 0;
     updatePlots();
     updateBlinkStats();
-    resetDailyCountAtMidnight();
+    checknewday(); // Check if it's a new day to reset blink count
 });
 
 // Update the plots to reflect the current state of trees
