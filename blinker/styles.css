@@ -12,7 +12,6 @@ body {
 
 #game-container {
   width: 95%;
-  margin-bottom: 20px; /* Add space for extra details */
   border: 1px solid #00cc00;
   padding: 10px;
   border-radius: 10px;
