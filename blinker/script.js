@@ -86,7 +86,7 @@ function startTimer(plot, index) {
         if (elapsed >= 8) {
             clearInterval(interval);
             plot.classList.add('active');
-            treeStates[index] = { planted: true, dead: false };
+            treeStates
             totalBlinkersToday++;
             if (totalBlinkersToday > highScore) {
                 highScore = totalBlinkersToday;
