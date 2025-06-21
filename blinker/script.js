@@ -114,15 +114,6 @@ function startBlinkerAnimation(plot) {
             isBlinking = false;
             updateBlinkStats();
             checkAllTreesFilled();
-            setTimeout(() => {
-                treeStates[index].dead = true;
-                chrome.storage.local.set({ treeStates }, () => {
-                    console.log('Tree died!');
-                });
-                plot.classList.remove('active');
-                plot.innerHTML = '';
-                plantedTreesCount--; // Decrement the planted trees count
-            }, 7200000);
         }
     }, 200);
 }
