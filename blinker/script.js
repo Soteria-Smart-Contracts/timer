@@ -199,7 +199,7 @@ function resetDailyCountAtMidnight() {
 // Event listeners for plots
 plots.forEach((plot, index) => {
     plot.addEventListener('click', () => {
-        if (!isBlinking && !treeStates.includes(index)) {
+        if (!isBlinking && !plot.classList.contains('active')) {
             isBlinking = true;
             startCountdown(plot, index);
         }
