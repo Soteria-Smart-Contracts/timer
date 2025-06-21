@@ -12,6 +12,7 @@ body {
 
 #game-container {
   width: 95%;
+  margin-bottom: 20px; /* Add space for extra details */
   border: 1px solid #00cc00;
   padding: 10px;
   border-radius: 10px;
@@ -73,7 +74,7 @@ body {
 #reset-button {
   display: block;
   margin: 20px auto;
-  margin-bottom: 30px;
+  margin-top: 30px;
   padding: 10px 20px;
   font-size: 16px;
   color: #fff;
@@ -89,10 +90,10 @@ body {
 }
 
 #blink-stats {
-    align-self: center;
   text-align: center;
   font-size: 16px;
   color: #fff;
+  margin-top: 10px;
   border: 1px solid #008000;
   padding: 10px;
   border-radius: 5px;
