@@ -114,6 +114,7 @@ function startBlinkerAnimation(plot) {
             isBlinking = false;
             updateBlinkStats();
             checkAllTreesFilled();
+
         }
     }, 200);
 }
