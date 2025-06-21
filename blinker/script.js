@@ -197,6 +197,16 @@ function getRandomGnomeMessage() {
 function checknewday() {
     //see if the current date is different from the last saved date, if there is no saved date, or if the last saved date is more than 24 hours ago
     // then reset the daily blink count
+    const now = new Date();
+    chrome.storage.local.get(['lastResetDate'], ({ lastResetDate }) => {
+        if (!lastResetDate || new Date(lastResetDate).toDateString() !== now.toDateString()) {
+            totalBlinkersToday = 0;
+            chrome.storage.local.set({ totalBlinkersToday, lastResetDate: now.toISOString() }, () => {
+                console.log('Daily blink count reset!');
+                updateBlinkStats();
+            });
+        }
+    });
 
 }
 
