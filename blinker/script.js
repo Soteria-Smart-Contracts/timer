@@ -20,6 +20,7 @@ function updatePlots() {
     plantedTreesCount = 0; // Reset plantedTreesCount
     plots.forEach((plot, index) => {
         if (treeStates.includes(index)) {
+            console
             plot.classList.add('active');
             plot.innerHTML = `<div class="timer countdown">Planted!</div>`;
             plantedTreesCount++;
