@@ -195,7 +195,7 @@ function getRandomGnomeMessage() {
 
 // Reset daily blink count at midnight
 function checknewday() {
-    
+    //see 
 
 }
 
