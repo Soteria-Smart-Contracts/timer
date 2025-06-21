@@ -217,7 +217,7 @@ function checknewday() {
 // Event listeners for plots
 plots.forEach((plot, index) => {
     plot.addEventListener('click', () => {
-        if (!isBlinking && (!treeStates[index] || treeStates[index].dead)) {
+        if (!isBlinking && !treeStates.includes(index)) {
             isBlinking = true;
             startCountdown(plot, index);
         }
