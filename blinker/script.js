@@ -22,7 +22,8 @@ function updatePlots() {
         const plotElement = plots[index];
         plotElement.classList.add('active');
         plotElement.innerHTML = '<div class="timer countdown">Planted!</div>';
-        
+        //set the font to 16px
+        plotElement.querySelector('.timer').style.fontSize = '16px';
         
     });
     updateBlinkStats();
