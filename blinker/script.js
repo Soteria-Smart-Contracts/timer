@@ -3,7 +3,6 @@ let treeStates = [];
 let totalBlinkersToday = 0;
 let highScore = 0;
 let isBlinking = false;
-let plantedTreesCount = 0;
 
 // Load saved states from storage
 chrome.storage.local.get(['treeStates', 'totalBlinkersToday', 'highScore'], ({ treeStates: ts, totalBlinkersToday: tb, highScore: hs }) => {
@@ -22,7 +21,6 @@ function updatePlots() {
         const plotElement = plots[index];
         plotElement.classList.add('active');
         plotElement.innerHTML = '<div class="timer countdown">Planted!</div>';
-        plantedTreesCount++;
     });
     updateBlinkStats();
 }
