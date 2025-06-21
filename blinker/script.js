@@ -194,12 +194,12 @@ function resetDailyCountAtMidnight() {
         updatePlots();
         resetDailyCountAtMidnight();
     }, timeUntilMidnight);
-}//fix this
+}
 
 // Event listeners for plots
 plots.forEach((plot, index) => {
     plot.addEventListener('click', () => {
-        if (!isBlinking && !treeStates.includes(index)) {
+        if (!isBlinking && (!treeStates[index] || treeStates[index].dead)) {
             isBlinking = true;
             startCountdown(plot, index);
         }
