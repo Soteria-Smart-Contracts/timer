@@ -19,7 +19,8 @@ chrome.storage.local.get(['treeStates', 'totalBlinkersToday', 'highScore'], ({ t
 function updatePlots() {
     plantedTreesCount = 0; // Reset plantedTreesCount
     plots.forEach((plot, index) => {
-        if (treeStates.includes(index)) {
+        const state = treeStates[index];
+        if (state && state.planted && !state.dead) {
             plot.classList.add('active');
             plot.innerHTML = '<div class="timer">Planted!</div>';
             plantedTreesCount++;
@@ -85,7 +86,7 @@ function startTimer(plot, index) {
         if (elapsed >= 8) {
             clearInterval(interval);
             plot.classList.add('active');
-            treeStates.push(index);
+            treeStates[index] = { planted: true, dead: false };
             totalBlinkersToday++;
             if (totalBlinkersToday > highScore) {
                 highScore = totalBlinkersToday;
@@ -120,10 +121,7 @@ function startBlinkerAnimation(plot) {
             updateBlinkStats();
             checkAllTreesFilled();
             setTimeout(() => {
-                const index = treeStates.indexOf(index);
-                if (index !== -1) {
-                    treeStates.splice(index, 1);
-                }
+                treeStates[index].dead = true;
                 chrome.storage.local.set({ treeStates }, () => {
                     console.log('Tree died!');
                 });
@@ -137,7 +135,7 @@ function startBlinkerAnimation(plot) {
 
 // Check if all trees are filled and display gnome image
 function checkAllTreesFilled() {
-    if (treeStates.length === plots.length) {
+    if (treeStates.length === plots.length && treeStates.every(state => state && state.planted)) {
         displayGnome();
     }
 }
@@ -216,7 +214,7 @@ function resetDailyCountAtMidnight() {
 // Event listeners for plots
 plots.forEach((plot, index) => {
     plot.addEventListener('click', () => {
-        if (!isBlinking && !treeStates.includes(index)) {
+        if (!isBlinking && (!treeStates[index] || treeStates[index].dead)) {
             isBlinking = true;
             startCountdown(plot, index);
         }
