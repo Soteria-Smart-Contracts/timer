@@ -194,7 +194,7 @@ function resetDailyCountAtMidnight() {
         updatePlots();
         resetDailyCountAtMidnight();
     }, timeUntilMidnight);
-}
+}//fix this
 
 // Event listeners for plots
 plots.forEach((plot, index) => {
