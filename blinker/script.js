@@ -196,6 +196,7 @@ function getRandomGnomeMessage() {
 // Reset daily blink count at midnight
 function checknewday() {
     //see if the current date is different from the last saved date, if there is no saved date, or if the last saved date is more than 24 hours ago
+    // then reset the daily blink count
 
 }
 
