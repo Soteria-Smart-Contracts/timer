@@ -206,6 +206,10 @@ function checknewday() {
                 updateBlinkStats();
             });
         }
+        else {
+            console.log('Daily blink count already reset for today.');
+        }
+        updateBlinkStats();
     });
 
 }
