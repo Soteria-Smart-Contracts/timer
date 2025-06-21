@@ -120,7 +120,7 @@ function startBlinkerAnimation(plot) {
 
 // Check if all trees are filled and display gnome image
 function checkAllTreesFilled() {
-    if (treeStates.length === plots.length) {
+    if (treeStates.length === plots.length && treeStates.every(state => state && state.planted)) {
         displayGnome();
     }
 }
@@ -199,7 +199,7 @@ function resetDailyCountAtMidnight() {
 // Event listeners for plots
 plots.forEach((plot, index) => {
     plot.addEventListener('click', () => {
-        if (!isBlinking && !plot.classList.contains('active')) {
+        if (!isBlinking && !treeStates.includes(index)) {
             isBlinking = true;
             startCountdown(plot, index);
         }
