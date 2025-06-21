@@ -21,6 +21,8 @@ function updatePlots() {
     treeStates.forEach((index) => {
         const plotElement = plots[index];
         plotElement.classList.add('active');
+        plotElement.innerHTML = '<div class="timer countdown">Planted!</div>';
+        
         
     });
     updateBlinkStats();
