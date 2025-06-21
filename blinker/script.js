@@ -1,5 +1,5 @@
 const plots = document.querySelectorAll('.plot');
-let treeStates = [];
+let treeStates = []; // Changed to an array
 let totalBlinkersToday = 0;
 let highScore = 0;
 let isBlinking = false;
