@@ -194,23 +194,8 @@ function getRandomGnomeMessage() {
 }
 
 // Reset daily blink count at midnight
-function resetDailyCountAtMidnight() {
-    const now = new Date();
-    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-    const timeUntilMidnight = tomorrow - now;
+function check() {
 
-    setTimeout(() => {
-        totalBlinkersToday = 0;
-        highScore = 0; // Reset high score if today's count was the highest
-        plantedTreesCount = 0; // Reset planted trees count
-        treeStates = [];
-        chrome.storage.local.set({ treeStates, totalBlinkersToday, highScore }, () => {
-            console.log('Daily blink count reset at midnight!');
-        });
-        updateBlinkStats();
-        updatePlots();
-        resetDailyCountAtMidnight();
-    }, timeUntilMidnight);
 }
 
 // Event listeners for plots
