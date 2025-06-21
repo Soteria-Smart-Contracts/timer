@@ -237,7 +237,7 @@ document.getElementById('reset-button').addEventListener('click', () => {
 document.getElementById('blink-count').addEventListener('click', () => {
     if (totalBlinkersToday > 0) {
         totalBlinkersToday--;
-        if (totalBlinkersToday < highScore) {
+        if (totalBlinkersToday > highScore) {
             highScore = totalBlinkersToday;
         }
         chrome.storage.local.set({ totalBlinkersToday, highScore }, () => {
