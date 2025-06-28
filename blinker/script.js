@@ -45,7 +45,7 @@ function startCountdown(plot, index) {
     const overlay = document.getElementById('countdown-overlay');
     const text = document.getElementById('countdown-text');
     //at this point, the countdown text may have been made smaller so we need to reset it to its original size and all class properties
-    text.style.fontSize = '24px';
+    text.style.fontSize = '48px';
     text.style.fontWeight = 'bold';
     text.style.textAlign = 'center';
     text.style.marginTop = '10px';
