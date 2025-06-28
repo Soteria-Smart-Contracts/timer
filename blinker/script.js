@@ -44,6 +44,7 @@ function updateBlinkStats() {
 function startCountdown(plot, index) {
     const overlay = document.getElementById('countdown-overlay');
     const text = document.getElementById('countdown-text');
+    //at this point, the countdown text may have been made smaller 
     overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
     text.style.color = 'white';
     let values = ['Ready', 'Set', 'Go'];
