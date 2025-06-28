@@ -158,21 +158,18 @@ function displayGnome() {
     img.style.height = 'auto';
     img.style.margin = '0 auto 10px';
 
-    const message = document.createElement('div');
-    message.textContent = getRandomGnomeMessage();
-    message.style.color = 'white';
-    message.style.textAlign = 'center';
-    message.style.fontSize = '24px';
-    message.style.fontWeight = 'bold';
-    message.style.marginTop = '10px';
-
-    overlay.innerHTML = '';
-    overlay.appendChild(img);
-    overlay.appendChild(message);
+    text.innerHTML = ''; // Clear existing text content
+    text.style.color = 'white';
+    text.style.textAlign = 'center';
+    text.style.fontSize = '24px';
+    text.style.fontWeight = 'bold';
+    text.style.marginTop = '10px';
+    text.appendChild(img); // Append the image inside the text container
+    text.appendChild(document.createTextNode(getRandomGnomeMessage())); // Add the message below the image
 
     setTimeout(() => {
         overlay.style.display = 'none';
-        overlay.innerHTML = ''; // Clear the overlay content
+        text.innerHTML = ''; // Clear the text container content
     }, 10000); // Display for 10 seconds
 }
 
