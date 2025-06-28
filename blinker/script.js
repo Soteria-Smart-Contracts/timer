@@ -166,8 +166,7 @@ function displayGnome() {
     message.style.fontWeight = 'bold';
     message.style.marginTop = '10px';
 
-    const gnomeElements = overlay.querySelectorAll('img, div');
-    gnomeElements.forEach(element => element.style.display = 'none');
+    overlay.innerHTML = '';
     overlay.appendChild(img);
     overlay.appendChild(message);
 
