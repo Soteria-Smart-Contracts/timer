@@ -158,22 +158,21 @@ function displayGnome() {
     img.style.height = 'auto';
     img.style.margin = '0 auto 10px';
 
-    const message = getRandomGnomeMessage();
-    const gnomeContainer = document.createElement('div');
-    gnomeContainer.style.textAlign = 'center';
-    gnomeContainer.style.color = 'white';
-    gnomeContainer.style.fontSize = '24px';
-    gnomeContainer.style.fontWeight = 'bold';
-    gnomeContainer.style.marginTop = '10px';
+    const message = document.createElement('div');
+    message.textContent = getRandomGnomeMessage();
+    message.style.color = 'white';
+    message.style.textAlign = 'center';
+    message.style.fontSize = '24px';
+    message.style.fontWeight = 'bold';
+    message.style.marginTop = '10px';
 
-    gnomeContainer.appendChild(img);
-    gnomeContainer.appendChild(document.createTextNode(message));
-
-    text.innerHTML = ''; // Clear existing text content
-    text.appendChild(gnomeContainer);
+    overlay.innerHTML = '';
+    overlay.appendChild(img);
+    overlay.appendChild(message);
 
     setTimeout(() => {
-        text.removeChild(gnomeContainer); // Remove gnome content
+        overlay.style.display = 'none';
+        overlay.innerHTML = ''; // Clear the overlay content
     }, 10000); // Display for 10 seconds
 }
 
