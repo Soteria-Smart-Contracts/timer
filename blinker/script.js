@@ -146,6 +146,10 @@ function checkAllTreesFilled() {
 function displayGnome() {
     const overlay = document.getElementById('countdown-overlay');
     const text = document.getElementById('countdown-text');
+
+    // Save the current content of the overlay
+    const previousContent = text.innerHTML;
+
     overlay.style.display = 'flex';
     overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
     overlay.style.justifyContent = 'center';
@@ -170,8 +174,9 @@ function displayGnome() {
     text.appendChild(document.createTextNode(message));
 
     setTimeout(() => {
+        // Restore the previous content of the overlay
+        text.innerHTML = previousContent;
         overlay.style.display = 'none';
-        text.innerHTML = ''; // Clear the text content
     }, 10000); // Display for 10 seconds
 }
 
