@@ -165,7 +165,7 @@ function displayGnome() {
     text.style.fontWeight = 'bold';
     text.style.marginTop = '10px';
     text.appendChild(img); // Append the image inside the text container
-    text.appendChild(document.createTextNode('<br>'>getRandomGnomeMessage())); // Add the message below the image
+    text.appendChild(document.createTextNode('<br>' + getRandomGnomeMessage())); // Add the message below the image
 
     setTimeout(() => {
         overlay.style.display = 'none';
