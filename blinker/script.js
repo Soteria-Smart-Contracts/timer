@@ -167,6 +167,7 @@ function displayGnome() {
     gnomeContainer.style.marginTop = '10px';
 
     gnomeContainer.appendChild(img);
+    gnomeContainer.appendChild('<br>');
     gnomeContainer.appendChild(document.createTextNode(message));
 
     text.innerHTML = ''; // Clear existing text content
