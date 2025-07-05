@@ -40,6 +40,8 @@ function updateBlinkStats() {
     document.getElementById('high-score').textContent = highScore;
 }
 
+
+
 // Start the countdown overlay
 function startCountdown(plot, index) {
     const overlay = document.getElementById('countdown-overlay');
